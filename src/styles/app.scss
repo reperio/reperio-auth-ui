@@ -1,0 +1,246 @@
+@import 'variables';
+@import '~@reperio/ui-components/lib/styles.min.css';
+
+.app-container {
+    display: flex;
+    flex-direction: column;
+    height:100%;
+    width: 100%;
+    min-width: 1280px;
+
+    .app-root {
+        display: flex;
+        flex: 1 1 auto;
+
+        .app-main {
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+
+            .app-sidebar {
+                background-color: $dark1
+            }
+
+            .app-content {
+                flex: 1;
+                padding-top: 20px;
+                padding-left: 50px;
+                padding-right: 50px;
+                padding-bottom: 40px;
+                display: flex;
+                flex-grow: 1;
+                overflow-y: auto;
+            }
+        }
+    }
+}
+
+.row {
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-bottom: 1.5em;
+}
+
+h2 {
+  font-weight: 300;
+  color: $primary-color;
+}
+
+  body {
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+  }
+
+.group { 
+    position:relative; 
+    margin-bottom: 35px; 
+    margin-left: 40px;
+}
+
+.inputMaterial	{
+    font-size:18px;
+    padding:10px 10px 10px 5px;
+    display:block;
+    width:300px;
+    border:none;
+    border-bottom:1px solid #757575;
+}
+
+.inputMaterial:focus 		{ 
+    outline:none;
+    border-bottom: none;
+}
+
+label {
+    color:black; 
+    font-size:17px;
+    font-weight:300;
+    transition:0.2s ease all; 
+    -moz-transition:0.2s ease all; 
+    -webkit-transition:0.2s ease all;
+}
+
+.profile-circle {
+  border-radius: 50%;
+  max-height: 120px;
+  max-width: 120px;
+  text-align: center;
+  line-height: 120px;
+  background-color: $primary-color;
+  color: white;
+  font-size: 4.15em;
+}
+
+.profile-primaryEmailAddress {
+  font-weight: 400;
+  font-size: 20px;
+  color: $primary-color;
+  word-break: break-all;
+}
+
+.management-name {
+  font-weight: 400;
+  font-size: 35px;
+  color: $primary-color;
+  margin-bottom: 0.5em;
+}
+
+.management-submission-controls-container {
+  padding-top: 1.5em;
+  width: 100%;
+}
+
+.management-submission-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.management-container {
+  display: flex;
+  width: 100%;
+}
+
+.management-left {
+  flex: 3 0 0px;
+}
+
+.management-top {
+  word-break: break-all;
+}
+
+.management-right {
+  flex: initial;
+  max-width: 100%;
+  width: 500px;
+  padding-left: 15px;
+}
+
+.management-organizations {
+  word-break: break-all;
+}
+
+form {
+  flex: 1;
+}
+
+fieldset {
+  flex: 1;
+}
+
+.management-form {
+  max-width: 100% !important;
+}
+
+@media all and (min-width: 1621px) {
+  .management-right{display:block;}
+  .management-top{display:none;}
+  .management-controls-bottom{display:none;}
+}
+
+@media all and (max-width: 1622px) {
+  .management-right{display:none;}
+  .management-top{display:block;}
+  .management-controls-bottom{display:block;}
+}
+
+.roles-permissions-detail-container {
+  padding-left:30px;
+}
+
+.roles-permissions-detail-header {
+  color: $primary-color;
+}
+
+.roles-permissions-detail-permission-name {
+  padding-left: 20px;
+  font-weight: bold;
+}
+
+.roles-permissions-row {
+  cursor: pointer;
+}
+
+.roles-permissions-row-arrow {
+  padding-right: 5px;
+}
+
+.no-padding-container {
+  padding: 0px;
+}
+
+.dropdown-menu > li > a{
+  color:black !important;
+}
+
+.nav > .open > .dropdown-toggle {
+  background-color: transparent !important;
+  color: gray !important;
+}
+
+.nav-menu-container {
+  width: 300px;
+}
+
+.r-wrapper-column-direction {
+  flex-direction: column;
+}
+
+.wrapper-panel {
+  position: relative;
+  cursor: pointer;
+}
+
+.wrapper-panel-open {
+  position: relative;
+}
+
+#overlay {
+  position: fixed;
+  background-color: #333;
+  opacity: 0.7;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 5;
+}
+
+.panel-controls {
+  position: absolute;
+  right: 0;
+  padding-top: 15px;
+  padding-right: 10px;
+  display: flex;
+}
+
+.panel-control-item {
+  flex: 1;
+  cursor: pointer;
+  min-width: 25px;
+}
+
+.panel-form {
+  margin: 0px;
+}
