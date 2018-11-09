@@ -1,11 +1,11 @@
 import React from 'react'
 import {connect} from "react-redux";
-// import {submitAuth} from "../../actions/authActions";
+import {setAuthToken} from "../../actionCreators/authActionCreators";
 import {bindActionCreators} from "redux";
 import LoginForm from "../../components/auth/loginForm";
 import { history } from '../../store/history';
 import { RouteComponentProps } from 'react-router';
-import { State } from '../../store/initialState';
+import { State } from '../../store/state';
 
 class LoginFormValues {
     primaryEmailAddress: string;
@@ -19,7 +19,7 @@ interface DispatchProps extends ReturnType<typeof mapActionToProps> {}
 class LoginFormContainer extends React.Component<RouteComponentProps<any> & StateProps & DispatchProps> {
 
     async onSubmit(values: LoginFormValues) {
-        // await this.props.actions.submitAuth(values.primaryEmailAddress, values.password);
+        await this.props.actions.setAuthToken(values.primaryEmailAddress);
         console.log("onSubmit");
     };
 
@@ -46,7 +46,7 @@ function mapStateToProps(state: State) {
 
 function mapActionToProps(dispatch: any) {
     return {
-        // actions: bindActionCreators({submitAuth}, dispatch)
+        actions: bindActionCreators({setAuthToken}, dispatch)
     };
 }
 
