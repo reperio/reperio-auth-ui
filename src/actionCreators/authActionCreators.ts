@@ -2,6 +2,8 @@ import {Dispatch} from "react-redux";
 import { authService } from "../services/authService";
 import {State} from "../store/state";
 import {authActionTypes} from "../actionTypes/authActionTypes";
+import {history} from "../store/history";
+import {getErrorMessageFromStatusCode} from "./errorMessageHelper";
 
 export function setAuthToken(authToken: string, forceActionDispatch = false) {
     return function (dispatch: Dispatch<any>, getState: () => State) {
@@ -35,6 +37,32 @@ export function setAuthToken(authToken: string, forceActionDispatch = false) {
                     type: authActionTypes.AUTH_CLEAR_TOKEN
                 });
             }
+        }
+    }
+}
+
+export function submitAuth(primaryEmailAddress: string, password: string) {
+    return async function(dispatch: Dispatch<any>) {
+        dispatch({
+            type: authActionTypes.AUTH_LOGIN_PENDING
+        });
+
+        try {
+            await authService.login(primaryEmailAddress, password);
+
+            dispatch({
+                type: authActionTypes.AUTH_LOGIN_SUCCESSFUL
+            });
+        } catch (e) {
+            if (e.response.status !== 401) {
+                console.error(e);
+            }
+            dispatch({
+                type: authActionTypes.AUTH_LOGIN_ERROR,
+                payload: {
+                    message: getErrorMessageFromStatusCode(e.response != null ? e.response.status : null)
+                }
+            });
         }
     }
 }

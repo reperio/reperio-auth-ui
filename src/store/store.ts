@@ -4,7 +4,7 @@ import { localStorageService } from "../services/localStorageService";
 
 export const store = configureStore({
     auth: {
-        reperioCoreJWT: localStorageService.getReperioCoreJWT()
+        reperioCoreJWT: localStorageService.getReperioCoreJWT(),
     }
 });
 

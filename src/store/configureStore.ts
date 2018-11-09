@@ -6,9 +6,11 @@ import createRootReducer from '../reducers';
 import { history } from "./history";
 import {State} from "./state";
 
+export type RecursivePartial<T> = {
+    [P in keyof T]?: RecursivePartial<T[P]>;
+}
 
-
-export function configureStore(initialState?: State) {
+export function configureStore(initialState?: RecursivePartial<State>) {
     const middleware = [
         thunk,
         routerMiddleware(history),

@@ -18,7 +18,7 @@ axios.interceptors.request.use(async config => {
 axios.interceptors.response.use(async response => {
     if (response.headers != null && response.headers.authorization != null && response.headers.authorization.slice(0, 6) === "Bearer") {
         const authToken = response.headers.authorization.slice(7);
-        await setAuthToken(authToken)(store.dispatch, store.getState());
+        await setAuthToken(authToken)(store.dispatch, store.getState);
     }
     return response;
 });
