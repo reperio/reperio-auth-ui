@@ -6,7 +6,7 @@ import {history} from "../store/history";
 import {getErrorMessageFromStatusCode} from "./errorMessageHelper";
 
 export function setAuthToken(authToken: string, forceActionDispatch = false) {
-    return function (dispatch: Dispatch<any>, getState: () => State) {
+    return function (dispatch: Dispatch<State>, getState: () => State) {
         const state = getState();
         const oldAuthToken = state.auth.reperioCoreJWT;
         const oldParsedToken = oldAuthToken == null ? null : authService.parseJwt(oldAuthToken);
@@ -42,7 +42,7 @@ export function setAuthToken(authToken: string, forceActionDispatch = false) {
 }
 
 export function submitAuth(primaryEmailAddress: string, password: string) {
-    return async function(dispatch: Dispatch<any>) {
+    return async function(dispatch: Dispatch<State>) {
         dispatch({
             type: authActionTypes.AUTH_LOGIN_PENDING
         });
