@@ -5,6 +5,7 @@ import {bindActionCreators} from "redux";
 import LoginForm, {LoginFormData} from "../../components/auth/loginForm";
 import { RouteComponentProps } from 'react-router';
 import { State } from '../../store/state';
+import LoadingSpinner from "../../components/loadingSpinner";
 
 interface StateProps extends ReturnType<typeof mapStateToProps> {}
 
@@ -23,9 +24,12 @@ class LoginFormContainer extends React.Component<RouteComponentProps<any> & Stat
 
     render() {
         return (
-            <LoginForm onSubmit={this.onSubmit.bind(this)}
-                       navigateToForgotPassword={this.navigateToForgotPassword.bind(this)}
-                       auth={this.props.auth} />
+            <React.Fragment>
+                <LoginForm onSubmit={this.onSubmit.bind(this)}
+                           navigateToForgotPassword={this.navigateToForgotPassword.bind(this)}
+                           auth={this.props.auth} />
+                {this.props.auth.isInProgress ? <LoadingSpinner /> : null}
+            </React.Fragment>
         );
     }
 }
