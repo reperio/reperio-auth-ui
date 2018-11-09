@@ -2,15 +2,20 @@ import React from 'react'
 import { Field, reduxForm, InjectedFormProps } from 'redux-form';
 import { TextboxElement, ButtonElement, Wrapper } from '@reperio/ui-components';
 
-interface LoginProps {
+export interface LoginFormData {
+    primaryEmailAddress: string;
+    password: string;
+}
+
+export interface LoginFormProps {
     navigateToForgotPassword(): void;
-    onSubmit(): void;
+    onSubmit(x: LoginFormData): void;
     authSession: any; //StateAuthSession;
 }
 
-type Form = LoginProps & InjectedFormProps<any>;
+type CombinedProps = LoginFormProps & InjectedFormProps<LoginFormData, LoginFormProps>;
 
-const LoginForm: React.SFC<Form> = (props: Form) => (
+const LoginForm: React.SFC<CombinedProps> = (props: CombinedProps) => (
     <form onSubmit={props.handleSubmit(props.onSubmit)}>
         <Wrapper>
             <div className="r-wrapper-child ">
@@ -48,5 +53,4 @@ const LoginForm: React.SFC<Form> = (props: Form) => (
     </form>
 );
 
-// casted to <any> because reduxForm doesn't play nicely with other things
-export default reduxForm({ form: 'loginForm' })(LoginForm) as any;
+export default reduxForm<LoginFormData, LoginFormProps>({ form: 'loginForm' })(LoginForm);
