@@ -53,12 +53,41 @@ export function submitAuth(primaryEmailAddress: string, password: string) {
             dispatch({
                 type: authActionTypes.AUTH_LOGIN_SUCCESSFUL
             });
+
+            await requestOTP()(dispatch);
         } catch (e) {
             if (e.response.status !== 401) {
                 console.error(e);
             }
             dispatch({
                 type: authActionTypes.AUTH_LOGIN_ERROR,
+                payload: {
+                    message: getErrorMessageFromStatusCode(e.response != null ? e.response.status : null)
+                }
+            });
+        }
+    }
+}
+
+export function requestOTP() {
+    return async function(dispatch: Dispatch<State>) {
+        dispatch({
+            type: authActionTypes.AUTH_OTP_PENDING
+        });
+
+        try {
+            const {otp} = await authService.generateOTP();
+
+            dispatch({
+                type: authActionTypes.AUTH_OTP_SUCCESSFUL,
+                payload: {otp}
+            });
+        } catch (e) {
+            if (e.response.status !== 401) {
+                console.error(e);
+            }
+            dispatch({
+                type: authActionTypes.AUTH_OTP_ERROR,
                 payload: {
                     message: getErrorMessageFromStatusCode(e.response != null ? e.response.status : null)
                 }

@@ -5,6 +5,10 @@ export const authService = {
         return await reperioCoreAxios.post(`/auth/login`, {primaryEmailAddress, password});
     },
 
+    async generateOTP() {
+        return (await reperioCoreAxios.post<{otp: string}>(`/auth/otp/generate`)).data;
+    },
+
     parseJwt(token: string): any {
         const base64Url = token.split('.')[1];
         const base64 = base64Url.replace('-', '+').replace('_', '/');

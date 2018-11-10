@@ -22,7 +22,10 @@ export function authReducer(state: StateAuth = initialState.auth, action: {type:
                 isInProgress: true,
                 isSuccessful: false,
                 isError: false,
-                errorMessage: null
+                errorMessage: null,
+                otpIsInProgress: false,
+                otpIsSuccessful: false,
+                otp: null
             }
         }
         case authActionTypes.AUTH_LOGIN_SUCCESSFUL: {
@@ -31,7 +34,10 @@ export function authReducer(state: StateAuth = initialState.auth, action: {type:
                 isInProgress: false,
                 isSuccessful: true,
                 isError: false,
-                errorMessage: null
+                errorMessage: null,
+                otpIsInProgress: false,
+                otpIsSuccessful: false,
+                otp: null
             }
         }
         case authActionTypes.AUTH_LOGIN_ERROR: {
@@ -41,7 +47,37 @@ export function authReducer(state: StateAuth = initialState.auth, action: {type:
                 isInProgress: false,
                 isSuccessful: false,
                 isError: true,
-                errorMessage: message
+                errorMessage: message,
+                otpIsInProgress: false,
+                otpIsSuccessful: false,
+                otp: null
+            }
+        }
+        case authActionTypes.AUTH_OTP_PENDING: {
+            return {
+                ...state,
+                otpIsInProgress: true,
+                otpIsSuccessful: false,
+                otp: null
+            }
+        }
+        case authActionTypes.AUTH_OTP_SUCCESSFUL: {
+            const {otp} = action.payload;
+            return {
+                ...state,
+                otpIsInProgress: false,
+                otpIsSuccessful: true,
+                otp
+            }
+        }
+        case authActionTypes.AUTH_OTP_ERROR: {
+            const {message} = action.payload;
+            return {
+                ...state,
+                isError: true,
+                errorMessage: message,
+                otpIsInProgress: false,
+                otpIsSuccessful: false
             }
         }
         default: {

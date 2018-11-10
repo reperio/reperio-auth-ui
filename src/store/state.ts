@@ -8,6 +8,9 @@ export interface StateAuth {
     isSuccessful: boolean;
     isError: boolean;
     errorMessage: string;
+    otpIsInProgress: boolean;
+    otpIsSuccessful: boolean;
+    otp: string;
 }
 
 export const initialState: State = {
@@ -16,6 +19,9 @@ export const initialState: State = {
         isInProgress: false,
         isSuccessful: false,
         isError: false,
-        errorMessage: null
+        errorMessage: null,
+        otpIsInProgress: false,
+        otpIsSuccessful: false,
+        otp: null
     }
 };
