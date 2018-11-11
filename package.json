@@ -18,6 +18,7 @@
     "connected-react-router": "^5.0.0",
     "history": "^4.7.2",
     "html-webpack-plugin": "^3.2.0",
+    "query-string": "^6.2.0",
     "react": "^16.6.0",
     "react-bootstrap": "^0.32.1",
     "react-dom": "^16.6.0",
@@ -33,6 +34,7 @@
     "uuid": "^3.3.2"
   },
   "devDependencies": {
+    "@types/query-string": "^6.1.1",
     "@types/react": "^16.4.18",
     "@types/react-bootstrap": "^0.32.4",
     "@types/react-dom": "^16.0.9",

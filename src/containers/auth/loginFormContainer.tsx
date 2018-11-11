@@ -7,6 +7,7 @@ import { RouteComponentProps } from 'react-router';
 import { State } from '../../store/state';
 import LoadingSpinner from "../../components/loadingSpinner";
 import RedirectWithOTP from "../../components/redirectWithOTP";
+import queryString from "query-string";
 
 interface StateProps extends ReturnType<typeof mapStateToProps> {}
 
@@ -24,13 +25,16 @@ class LoginFormContainer extends React.Component<RouteComponentProps<any> & Stat
     };
 
     render() {
+        const queryParams = queryString.parse(this.props.location.search);
+        const next = queryParams.next as string;
+
         return (
             <React.Fragment>
                 <LoginForm onSubmit={this.onSubmit.bind(this)}
                            navigateToForgotPassword={this.navigateToForgotPassword.bind(this)}
                            auth={this.props.auth} />
                 {this.props.auth.isInProgress || this.props.auth.otpIsInProgress ? <LoadingSpinner /> : null}
-                {this.props.auth.otpIsSuccessful ? <RedirectWithOTP otp={this.props.auth.otp}/> : null}
+                {this.props.auth.otpIsSuccessful ? <RedirectWithOTP otp={this.props.auth.otp} next={next} /> : null}
             </React.Fragment>
         );
     }

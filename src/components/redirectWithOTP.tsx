@@ -2,8 +2,8 @@ import React from 'react';
 
 declare const CORE_UI_URL: string;
 
-const RedirectWithOTP = (props: {otp: string}) => {
-    const redirectUrl = CORE_UI_URL; // TODO replace with provided redirect url if provided
+const RedirectWithOTP = (props: {otp: string, next?: string}) => {
+    const redirectUrl = props.next || CORE_UI_URL;
 
     setTimeout(() => {
         window.location.assign(`${redirectUrl}?otp=${encodeURIComponent(props.otp)}`);

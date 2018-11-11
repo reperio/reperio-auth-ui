@@ -1,16 +1,27 @@
 import React from 'react'
 import { Route, Switch, Link } from "react-router-dom";
-import { Redirect } from "react-router";
+import {Redirect, RouteComponentProps} from "react-router";
+import queryString from "query-string";
 
 import LoginFormContainer from "../containers/auth/loginFormContainer";
 
-const Routes = (props: any) => (
+
+const RedirectWithQueryString = (props: RouteComponentProps) => {
+    const queryParams = queryString.parse(props.location.search);
+
+    return (
+        <Redirect to={{
+            pathname: "/login",
+            search: queryString.stringify({next: queryParams.next})
+        }} {...props} />
+    );
+};
+
+const Routes = () => (
     <div className="app-content">
         <Switch>
             <Route exact path="/login" component={LoginFormContainer} />
-            <Route>
-                <Redirect to="/login"/>
-            </Route>
+            <Route component={RedirectWithQueryString} />
         </Switch>
     </div>
 );
