@@ -9,15 +9,11 @@ import { store } from "./store/store"
 import { history } from "./store/history"
 import App from './components/app'
 
-async function load() {
-    ReactDOM.render(
-        <Provider store={store}>
-            <ConnectedRouter history={history}>
-                <App/>
-            </ConnectedRouter>
-        </Provider>,
-        document.getElementById('root')
-    );
-}
-
-load();
+ReactDOM.render(
+    <Provider store={store}>
+        <ConnectedRouter history={history}>
+            <App/>
+        </ConnectedRouter>
+    </Provider>,
+    document.getElementById('root')
+);

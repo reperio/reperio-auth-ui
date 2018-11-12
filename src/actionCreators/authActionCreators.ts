@@ -5,8 +5,22 @@ import {authActionTypes} from "../actionTypes/authActionTypes";
 import {history} from "../store/history";
 import {getErrorMessageFromStatusCode} from "./errorMessageHelper";
 
+export function initializeAuth() {
+    return async function (dispatch: Dispatch<State>, getState: () => State) {
+        const state = getState();
+
+        if (state.auth.reperioCoreJWT != null) {
+            await executeWithLoadedToken()(dispatch, getState);
+        } else {
+            dispatch({
+                type: authActionTypes.AUTH_CLEAR_TOKEN
+            });
+        }
+    }
+}
+
 export function setAuthToken(authToken: string, forceActionDispatch = false) {
-    return function (dispatch: Dispatch<State>, getState: () => State) {
+    return async function (dispatch: Dispatch<State>, getState: () => State) {
         const state = getState();
         const oldAuthToken = state.auth.reperioCoreJWT;
         const oldParsedToken = oldAuthToken == null ? null : authService.parseJwt(oldAuthToken);
@@ -22,12 +36,7 @@ export function setAuthToken(authToken: string, forceActionDispatch = false) {
             });
 
             if (forceActionDispatch || oldParsedToken == null || oldParsedToken.currentUserId !== parsedToken.currentUserId) {
-                // TODO retrieve user
-                // const user: User = (await userService.getUserById(parsedToken.currentUserId)).data;
-                // dispatch({
-                //     type: authActionTypes.AUTH_SET_TOKEN,
-                //     payload: {authToken, user}
-                // });
+                await executeWithLoadedToken()(dispatch, getState);
             }
         } else {
             // if the provided authToken is null or it's expired...
@@ -41,8 +50,14 @@ export function setAuthToken(authToken: string, forceActionDispatch = false) {
     }
 }
 
+export function executeWithLoadedToken() {
+    return async function (dispatch: Dispatch<State>, getState: () => State) {
+        await requestOTP()(dispatch, getState);
+    }
+};
+
 export function submitAuth(primaryEmailAddress: string, password: string) {
-    return async function(dispatch: Dispatch<State>) {
+    return async function(dispatch: Dispatch<State>, getState: () => State) {
         dispatch({
             type: authActionTypes.AUTH_LOGIN_PENDING
         });
@@ -54,7 +69,8 @@ export function submitAuth(primaryEmailAddress: string, password: string) {
                 type: authActionTypes.AUTH_LOGIN_SUCCESSFUL
             });
 
-            await requestOTP()(dispatch);
+            await executeWithLoadedToken()(dispatch, getState);
+
         } catch (e) {
             if (e.response.status !== 401) {
                 console.error(e);
@@ -70,7 +86,7 @@ export function submitAuth(primaryEmailAddress: string, password: string) {
 }
 
 export function requestOTP() {
-    return async function(dispatch: Dispatch<State>) {
+    return async function(dispatch: Dispatch<State>, getState: () => State) {
         dispatch({
             type: authActionTypes.AUTH_OTP_PENDING
         });
@@ -86,12 +102,20 @@ export function requestOTP() {
             if (e.response.status !== 401) {
                 console.error(e);
             }
-            dispatch({
-                type: authActionTypes.AUTH_OTP_ERROR,
-                payload: {
-                    message: getErrorMessageFromStatusCode(e.response != null ? e.response.status : null)
-                }
-            });
+
+            const state = getState();
+            if (state.auth.isAuthInitialized) {
+                dispatch({
+                    type: authActionTypes.AUTH_OTP_ERROR,
+                    payload: {
+                        message: getErrorMessageFromStatusCode(e.response != null ? e.response.status : null)
+                    }
+                });
+            } else {
+                dispatch({
+                    type: authActionTypes.AUTH_CLEAR_TOKEN
+                });
+            }
         }
     }
 }

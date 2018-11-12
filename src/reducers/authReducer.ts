@@ -12,8 +12,15 @@ export function authReducer(state: StateAuth = initialState.auth, action: {type:
         }
         case authActionTypes.AUTH_CLEAR_TOKEN: {
             return {
-                ...state,
-                reperioCoreJWT: null
+                isAuthInitialized: true,
+                reperioCoreJWT: null,
+                isInProgress: false,
+                isSuccessful: false,
+                isError: false,
+                errorMessage: null,
+                otpIsInProgress: false,
+                otpIsSuccessful: false,
+                otp: null
             };
         }
         case authActionTypes.AUTH_LOGIN_PENDING: {
