@@ -1,8 +1,8 @@
 import {Dispatch} from "react-redux";
-import { authService } from "../services/authService";
 import {State} from "../store/state";
 import {authActionTypes} from "../actionTypes/authActionTypes";
 import {getErrorMessageFromStatusCode} from "./errorMessageHelper";
+import {coreApiService} from "../services/coreApiService";
 
 export function initializeAuth() {
     return async function (dispatch: Dispatch<State>, getState: () => State) {
@@ -22,9 +22,9 @@ export function setAuthToken(authToken: string) {
     return async function (dispatch: Dispatch<State>, getState: () => State) {
         const state = getState();
         const oldAuthToken = state.auth.reperioCoreJWT;
-        const oldParsedToken = oldAuthToken == null ? null : authService.parseJwt(oldAuthToken);
+        const oldParsedToken = oldAuthToken == null ? null : coreApiService.authService.parseJwt(oldAuthToken);
 
-        const parsedToken = authToken == null ? null : authService.parseJwt(authToken);
+        const parsedToken = authToken == null ? null : coreApiService.authService.parseJwt(authToken);
 
         if (parsedToken != null && Math.round((new Date()).getTime() / 1000) < parsedToken.exp) {
             // if the provided authToken is not null and it's not expired...
@@ -60,7 +60,7 @@ export function submitAuth(primaryEmailAddress: string, password: string) {
         });
 
         try {
-            await authService.login(primaryEmailAddress, password);
+            await coreApiService.authService.login(primaryEmailAddress, password);
 
             dispatch({
                 type: authActionTypes.AUTH_LOGIN_SUCCESSFUL
@@ -89,7 +89,7 @@ export function requestOTP() {
         });
 
         try {
-            const {otp} = await authService.generateOTP();
+            const {otp} = await coreApiService.authService.generateOTP();
 
             dispatch({
                 type: authActionTypes.AUTH_OTP_SUCCESSFUL,
