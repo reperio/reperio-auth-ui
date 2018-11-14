@@ -2,7 +2,6 @@ import {Dispatch} from "react-redux";
 import { authService } from "../services/authService";
 import {State} from "../store/state";
 import {authActionTypes} from "../actionTypes/authActionTypes";
-import {history} from "../store/history";
 import {getErrorMessageFromStatusCode} from "./errorMessageHelper";
 
 export function initializeAuth() {
@@ -19,7 +18,7 @@ export function initializeAuth() {
     }
 }
 
-export function setAuthToken(authToken: string, forceActionDispatch = false) {
+export function setAuthToken(authToken: string) {
     return async function (dispatch: Dispatch<State>, getState: () => State) {
         const state = getState();
         const oldAuthToken = state.auth.reperioCoreJWT;
@@ -35,17 +34,15 @@ export function setAuthToken(authToken: string, forceActionDispatch = false) {
                 payload: {authToken}
             });
 
-            if (forceActionDispatch || oldParsedToken == null || oldParsedToken.currentUserId !== parsedToken.currentUserId) {
+            if (oldParsedToken == null || oldParsedToken.currentUserId !== parsedToken.currentUserId) {
                 await executeWithLoadedToken()(dispatch, getState);
             }
         } else {
             // if the provided authToken is null or it's expired...
 
-            if (forceActionDispatch || oldAuthToken != null) {
-                dispatch({
-                    type: authActionTypes.AUTH_CLEAR_TOKEN
-                });
-            }
+            dispatch({
+                type: authActionTypes.AUTH_CLEAR_TOKEN
+            });
         }
     }
 }
