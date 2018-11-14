@@ -29,10 +29,12 @@ export function setAuthToken(authToken: string) {
         if (parsedToken != null && Math.round((new Date()).getTime() / 1000) < parsedToken.exp) {
             // if the provided authToken is not null and it's not expired...
 
-            dispatch({
-                type: authActionTypes.AUTH_SET_TOKEN,
-                payload: {authToken}
-            });
+            if (authToken !== oldAuthToken) {
+                dispatch({
+                    type: authActionTypes.AUTH_SET_TOKEN,
+                    payload: {authToken}
+                });
+            }
 
             if (oldParsedToken == null || oldParsedToken.currentUserId !== parsedToken.currentUserId) {
                 await executeWithLoadedToken()(dispatch, getState);
