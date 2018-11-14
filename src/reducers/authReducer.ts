@@ -81,6 +81,8 @@ export function authReducer(state: StateAuth = initialState.auth, action: {type:
             const {message} = action.payload;
             return {
                 ...state,
+                isInProgress: false,
+                isSuccessful: false,
                 isError: true,
                 errorMessage: message,
                 otpIsInProgress: false,
