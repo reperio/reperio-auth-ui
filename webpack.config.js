@@ -39,7 +39,8 @@ module.exports = {
         }),
         new webpack.DefinePlugin({
             CORE_API_URL: JSON.stringify(process.env.CORE_API_URL || 'http://localhost:3000/api'),
-            CORE_UI_URL: JSON.stringify(process.env.CORE_UI_URL || 'http://localhost:8080')
+            CORE_UI_URL: JSON.stringify(process.env.CORE_UI_URL || 'http://localhost:8080'),
+            PERMITTED_POST_MESSAGE_ORIGINS: JSON.stringify(process.env.PERMITTED_POST_MESSAGE_ORIGINS || ['http://localhost:8080'])
         })
     ]
 };
