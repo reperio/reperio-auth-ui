@@ -21,6 +21,7 @@ const Routes = () => (
     <div className="app-content">
         <Switch>
             <Route exact path="/login" component={LoginFormContainer} />
+            <Route exact path="/auth" component={null} />
             <Route component={RedirectWithQueryString} />
         </Switch>
     </div>
