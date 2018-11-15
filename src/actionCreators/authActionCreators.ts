@@ -9,6 +9,10 @@ export function initializeAuth() {
         const state = getState();
 
         if (state.auth.reperioCoreJWT != null) {
+
+            dispatch({
+                type: authActionTypes.AUTH_LOGIN_SUCCESSFUL
+            });
             await executeWithLoadedToken()(dispatch, getState);
         } else {
             dispatch({

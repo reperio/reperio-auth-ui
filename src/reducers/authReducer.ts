@@ -38,6 +38,7 @@ export function authReducer(state: StateAuth = initialState.auth, action: {type:
         case authActionTypes.AUTH_LOGIN_SUCCESSFUL: {
             return {
                 ...state,
+                isAuthInitialized: true,
                 isInProgress: false,
                 isSuccessful: true,
                 isError: false,
