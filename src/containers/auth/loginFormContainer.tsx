@@ -6,7 +6,7 @@ import LoginForm, {LoginFormData} from "../../components/auth/loginForm";
 import { RouteComponentProps } from 'react-router';
 import { State } from '../../store/state';
 import LoadingSpinner from "../../components/loadingSpinner";
-import RedirectWithOTP from "../../components/redirectWithOTP";
+import ExternalRedirect from "../../components/externalRedirect";
 import queryString from "query-string";
 
 interface StateProps extends ReturnType<typeof mapStateToProps> {}
@@ -22,7 +22,10 @@ class LoginFormContainer extends React.Component<RouteComponentProps<any> & Stat
     }
 
     async onSubmit(values: LoginFormData) {
-        await this.props.actions.submitAuth(values.primaryEmailAddress, values.password);
+        const queryParams = queryString.parse(this.props.location.search);
+        const useOtp = "otp" in queryParams;
+
+        await this.props.actions.submitAuth(values.primaryEmailAddress, values.password, useOtp);
     };
 
     async navigateToForgotPassword() {
@@ -33,6 +36,7 @@ class LoginFormContainer extends React.Component<RouteComponentProps<any> & Stat
     render() {
         const queryParams = queryString.parse(this.props.location.search);
         const next = queryParams.next as string;
+        const useOtp = "otp" in queryParams;
 
         return (
             <React.Fragment>
@@ -44,7 +48,8 @@ class LoginFormContainer extends React.Component<RouteComponentProps<any> & Stat
                     </React.Fragment>
                 ) : <LoadingSpinner />}
                 {this.props.auth.isInProgress || this.props.auth.otpIsInProgress || this.props.auth.otpIsSuccessful ? <LoadingSpinner /> : null}
-                {this.props.auth.otpIsSuccessful ? <RedirectWithOTP otp={this.props.auth.otp} next={next} /> : null}
+                {useOtp && this.props.auth.otpIsSuccessful ? <ExternalRedirect otp={this.props.auth.otp} next={next} /> : null}
+                {!useOtp && this.props.auth.isSuccessful ? <ExternalRedirect next={next} /> : null}
             </React.Fragment>
         );
     }

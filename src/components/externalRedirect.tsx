@@ -3,14 +3,14 @@ import queryString from 'query-string';
 
 declare const CORE_UI_URL: string;
 
-const RedirectWithOTP = (props: {otp: string, next?: string}): any => {
+const ExternalRedirect = (props: {otp?: string, next?: string}): any => {
     const redirectUrl = props.next || CORE_UI_URL;
 
     const url = new URL(redirectUrl);
     const {origin, pathname, search, hash} = url;
 
     const queryParams = queryString.parse(search);
-    const queryParamsWithOTP = {...queryParams, otp: props.otp};
+    const queryParamsWithOTP = {...queryParams, ...(props.otp != null ? {otp: props.otp} : {})};
     const newSearch = queryString.stringify(queryParamsWithOTP);
     const newSearchWithQuestionMark = newSearch.length > 0 ? `?${newSearch}` : "";
 
@@ -26,4 +26,4 @@ const RedirectWithOTP = (props: {otp: string, next?: string}): any => {
     return null;
 };
 
-export default RedirectWithOTP;
+export default ExternalRedirect;

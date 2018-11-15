@@ -55,7 +55,7 @@ export function executeWithLoadedToken() {
     }
 };
 
-export function submitAuth(primaryEmailAddress: string, password: string) {
+export function submitAuth(primaryEmailAddress: string, password: string, requestOtp: boolean) {
     return async function(dispatch: Dispatch<State>, getState: () => State) {
         dispatch({
             type: authActionTypes.AUTH_LOGIN_PENDING
@@ -68,7 +68,9 @@ export function submitAuth(primaryEmailAddress: string, password: string) {
                 type: authActionTypes.AUTH_LOGIN_SUCCESSFUL
             });
 
-            await executeWithLoadedToken()(dispatch, getState);
+            if (requestOtp) {
+                await executeWithLoadedToken()(dispatch, getState);
+            }
 
         } catch (e) {
             if (e.response.status !== 401) {
