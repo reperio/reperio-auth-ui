@@ -1,10 +1,10 @@
 import React from 'react';
 import queryString from 'query-string';
 
-declare const CORE_UI_URL: string;
+declare const REDIRECT_URL: string;
 
 const ExternalRedirect = (props: {otp?: string, next?: string}): any => {
-    const redirectUrl = props.next || CORE_UI_URL;
+    const redirectUrl = props.next || REDIRECT_URL;
 
     const url = new URL(redirectUrl);
     const {origin, pathname, search, hash} = url;
