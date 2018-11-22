@@ -3,7 +3,7 @@ import { Route, Switch, Link } from "react-router-dom";
 import {Redirect, RouteComponentProps} from "react-router";
 import queryString from "query-string";
 
-import LoginFormContainer from "./auth/loginFormContainer";
+import {ConnectedLoginFormContainer} from "./auth/loginFormContainer";
 
 
 const RedirectWithQueryString = (props: RouteComponentProps) => {
@@ -17,14 +17,12 @@ const RedirectWithQueryString = (props: RouteComponentProps) => {
     );
 };
 
-const Routes = () => (
+export const Routes = () => (
     <div className="app-content">
         <Switch>
-            <Route exact path="/login" component={LoginFormContainer} />
+            <Route exact path="/login" component={ConnectedLoginFormContainer} />
             <Route exact path="/auth" component={null} />
             <Route component={RedirectWithQueryString} />
         </Switch>
     </div>
 );
-
-export default Routes;

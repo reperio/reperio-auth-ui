@@ -88,4 +88,4 @@ const LoginForm: React.SFC<CombinedProps> = (props: CombinedProps) => (
     </form>
 );
 
-export default reduxForm<LoginFormData, LoginFormProps>({ form: 'loginForm' })(LoginForm);
+export const ConnectedLoginForm = reduxForm<LoginFormData, LoginFormProps>({ form: 'loginForm' })(LoginForm);

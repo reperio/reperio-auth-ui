@@ -2,7 +2,7 @@ import React from 'react'
 import {connect} from "react-redux";
 import {submitAuth, initializeAuth} from "../../actionCreators/authActionCreators";
 import {bindActionCreators} from "redux";
-import LoginForm, {LoginFormData} from "./loginForm";
+import {ConnectedLoginForm, LoginFormData} from "./loginForm";
 import { RouteComponentProps } from 'react-router';
 import { State } from '../../store/state';
 import LoadingSpinner from "../loadingSpinner";
@@ -42,9 +42,9 @@ class LoginFormContainer extends React.Component<RouteComponentProps<any> & Stat
             <React.Fragment>
                 {this.props.auth.isAuthInitialized ? (
                     <React.Fragment>
-                        <LoginForm onSubmit={this.onSubmit.bind(this)}
-                                   navigateToForgotPassword={this.navigateToForgotPassword.bind(this)}
-                                   auth={this.props.auth} />
+                        <ConnectedLoginForm onSubmit={this.onSubmit.bind(this)}
+                                            navigateToForgotPassword={this.navigateToForgotPassword.bind(this)}
+                                            auth={this.props.auth} />
                     </React.Fragment>
                 ) : <LoadingSpinner />}
                 {this.props.auth.isInProgress || this.props.auth.otpIsInProgress || this.props.auth.otpIsSuccessful ? <LoadingSpinner /> : null}
@@ -67,4 +67,4 @@ function mapActionToProps(dispatch: any) {
     };
 }
 
-export default connect(mapStateToProps, mapActionToProps)(LoginFormContainer);
+export const ConnectedLoginFormContainer = connect(mapStateToProps, mapActionToProps)(LoginFormContainer);

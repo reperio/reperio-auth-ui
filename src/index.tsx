@@ -7,7 +7,7 @@ import "./styles/app.scss"
 
 import { store } from "./store/store"
 import { history } from "./store/history"
-import App from './components/app'
+import {App} from './components/app'
 
 ReactDOM.render(
     <Provider store={store}>
