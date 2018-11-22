@@ -2,11 +2,11 @@ import React from 'react'
 import {connect} from "react-redux";
 import {submitAuth, initializeAuth} from "../../actionCreators/authActionCreators";
 import {bindActionCreators} from "redux";
-import LoginForm, {LoginFormData} from "../../components/auth/loginForm";
+import LoginForm, {LoginFormData} from "./loginForm";
 import { RouteComponentProps } from 'react-router';
 import { State } from '../../store/state';
-import LoadingSpinner from "../../components/loadingSpinner";
-import ExternalRedirect from "../../components/externalRedirect";
+import LoadingSpinner from "../loadingSpinner";
+import ExternalRedirect from "../externalRedirect";
 import queryString from "query-string";
 
 interface StateProps extends ReturnType<typeof mapStateToProps> {}

@@ -3,7 +3,7 @@ import { Route, Switch, Link } from "react-router-dom";
 import {Redirect, RouteComponentProps} from "react-router";
 import queryString from "query-string";
 
-import LoginFormContainer from "../containers/auth/loginFormContainer";
+import LoginFormContainer from "./auth/loginFormContainer";
 
 
 const RedirectWithQueryString = (props: RouteComponentProps) => {
