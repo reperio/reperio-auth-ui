@@ -9,6 +9,7 @@
     "test": "jest"
   },
   "jest": {
+    "clearMocks": true,
     "setupTestFrameworkScriptFile": "<rootDir>/test/test-setup.js",
     "roots": [
       "./src"

@@ -1,24 +1,40 @@
 import React from 'react'
 import {connect} from "react-redux";
-import {submitAuth, initializeAuth} from "../../actionCreators/authActionCreators";
-import {bindActionCreators} from "redux";
-import {ConnectedLoginForm, LoginFormData} from "./loginForm";
 import { RouteComponentProps } from 'react-router';
-import { State } from '../../store/state';
-import LoadingSpinner from "../loadingSpinner";
-import ExternalRedirect from "../externalRedirect";
+import {bindActionCreators} from "redux";
 import queryString from "query-string";
 
-interface StateProps extends ReturnType<typeof mapStateToProps> {}
+import {submitAuth, initializeAuth} from "../../actionCreators/authActionCreators";
+import { State } from '../../store/state';
 
-interface DispatchProps extends ReturnType<typeof mapActionToProps> {}
+import {ConnectedLoginPage, LoginFormData} from "./loginPage";
+import LoadingSpinner from "../loadingSpinner";
+import ExternalRedirect from "../externalRedirect";
 
-class LoginFormContainer extends React.Component<RouteComponentProps<any> & StateProps & DispatchProps> {
+import repBarSrc from '../../assets/rep-bar.svg';
+export const RepBar = () => (
+    <div style={{width: "100%", height: "54px", overflow: "hidden"}}>
+        <img src={repBarSrc} style={{width: "100%" }} />
+    </div>
+);
+
+type StateProps = ReturnType<typeof mapStateToProps>;
+type DispatchProps = ReturnType<typeof mapActionToProps>;
+export type CombinedProps = RouteComponentProps & StateProps & DispatchProps;
+
+export class LoginPageContainer extends React.Component<CombinedProps> {
 
     componentDidMount() {
         if (!this.props.auth.isAuthInitialized) {
             this.props.actions.initializeAuth();
         }
+    }
+
+    getQueryParams() {
+        const queryParams = queryString.parse(this.props.location.search);
+        const next = queryParams.next as string;
+        const useOtp = "otp" in queryParams;
+        return {next, useOtp};
     }
 
     async onSubmit(values: LoginFormData) {
@@ -34,18 +50,17 @@ class LoginFormContainer extends React.Component<RouteComponentProps<any> & Stat
     };
 
     render() {
-        const queryParams = queryString.parse(this.props.location.search);
-        const next = queryParams.next as string;
-        const useOtp = "otp" in queryParams;
+        const {next, useOtp} = this.getQueryParams();
 
         return (
             <React.Fragment>
+                <RepBar />
                 {this.props.auth.isAuthInitialized ? (
-                    <React.Fragment>
-                        <ConnectedLoginForm onSubmit={this.onSubmit.bind(this)}
-                                            navigateToForgotPassword={this.navigateToForgotPassword.bind(this)}
-                                            auth={this.props.auth} />
-                    </React.Fragment>
+                    <ConnectedLoginPage onSubmit={this.onSubmit.bind(this)}
+                                        navigateToForgotPassword={this.navigateToForgotPassword.bind(this)}
+                                        isSuccessful={this.props.auth.isSuccessful}
+                                        isError={this.props.auth.isError}
+                                        errorMessage={this.props.auth.errorMessage} />
                 ) : <LoadingSpinner />}
                 {this.props.auth.isInProgress || this.props.auth.otpIsInProgress || this.props.auth.otpIsSuccessful ? <LoadingSpinner /> : null}
                 {useOtp && this.props.auth.otpIsSuccessful ? <ExternalRedirect otp={this.props.auth.otp} next={next} /> : null}
@@ -67,4 +82,4 @@ function mapActionToProps(dispatch: any) {
     };
 }
 
-export const ConnectedLoginFormContainer = connect(mapStateToProps, mapActionToProps)(LoginFormContainer);
+export const ConnectedLoginPageContainer = connect(mapStateToProps, mapActionToProps)(LoginPageContainer);
