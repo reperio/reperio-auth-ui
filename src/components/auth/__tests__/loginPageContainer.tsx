@@ -2,13 +2,13 @@ import * as React from 'react';
 import {shallow} from 'enzyme';
 
 const mockAuthActionCreators = { };
-jest.mock("../../actionCreators/authActionCreators", () => mockAuthActionCreators);
+jest.mock("../../../actionCreators/authActionCreators", () => mockAuthActionCreators);
 
-import {CombinedProps as LoginPageContainerProps, LoginPageContainer, RepBar} from "./loginPageContainer";
-import LoadingSpinner from "../loadingSpinner";
-import {ConnectedLoginPage, LoginFormData} from "./loginPage";
+import {CombinedProps as LoginPageContainerProps, LoginPageContainer, RepBar} from "../loginPageContainer";
+import LoadingSpinner from "../../loadingSpinner";
+import {ConnectedLoginPage, LoginFormData} from "../loginPage";
 import SpyInstance = jest.SpyInstance;
-import ExternalRedirect from "../externalRedirect";
+import ExternalRedirect from "../../externalRedirect";
 
 describe("LoginPageContainer", () => {
     const baseProps: LoginPageContainerProps = {

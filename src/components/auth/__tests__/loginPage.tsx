@@ -1,9 +1,9 @@
 import * as React from 'react';
 import {shallow} from 'enzyme';
-import {StateAuth} from "../../store/state";
-import {LoginReperioLogo} from "./loginReperioLogo";
-import {CombinedProps, LoginPage} from "./loginPage";
-import {LoginForm} from "./loginForm";
+import {StateAuth} from "../../../store/state";
+import {LoginReperioLogo} from "../loginReperioLogo";
+import {CombinedProps, LoginPage} from "../loginPage";
+import {LoginForm} from "../loginForm";
 
 it('should show login reperio logo and login form', () => {
     const navigateToForgotPassword = jest.fn();

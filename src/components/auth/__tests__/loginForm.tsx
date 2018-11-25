@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {shallow} from 'enzyme';
-import {LoginForm, LoginFormFields, LoginFormHeader, LoginFormProps} from "./loginForm";
+import {LoginForm, LoginFormFields, LoginFormHeader, LoginFormProps} from "../loginForm";
 import {Field} from "redux-form";
 import {TextboxElement} from "@reperio/ui-components";
 
