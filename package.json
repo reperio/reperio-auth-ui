@@ -5,7 +5,30 @@
   "main": "webpack.config.js",
   "scripts": {
     "start": "webpack-dev-server --mode development --open --port 8081 --host localhost --history-api-fallback",
-    "webpack": "webpack"
+    "webpack": "webpack",
+    "test": "jest"
+  },
+  "jest": {
+    "clearMocks": true,
+    "setupTestFrameworkScriptFile": "<rootDir>/test/test-setup.js",
+    "roots": [
+      "./src"
+    ],
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ],
+    "moduleNameMapper": {
+      "^[./a-zA-Z0-9$_-]+\\.(svg|png)": "<rootDir>/test/relativeImageStub.js"
+    }
   },
   "author": "",
   "license": "ISC",
@@ -36,6 +59,8 @@
     "uuid": "^3.3.2"
   },
   "devDependencies": {
+    "@types/enzyme": "^3.1.15",
+    "@types/jest": "^23.3.9",
     "@types/query-string": "^6.1.1",
     "@types/react": "^16.4.18",
     "@types/react-bootstrap": "^0.32.4",
@@ -44,10 +69,14 @@
     "@types/react-router-dom": "^4.3.1",
     "@types/redux-form": "^7.4.5",
     "css-loader": "^0.28.10",
+    "enzyme": "^3.7.0",
+    "enzyme-adapter-react-16": "^1.7.0",
     "http-server": "^0.11.1",
+    "jest": "^23.6.0",
     "node-sass": "^4.7.2",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.20.2",
+    "ts-jest": "^23.10.4",
     "ts-loader": "^4.0.0",
     "typescript": "^2.7.2",
     "url-loader": "^0.6.2",
