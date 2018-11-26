@@ -164,13 +164,15 @@ describe("LoginPageContainer", () => {
         const getQueryParamsMock = jest.spyOn(LoginPageContainer.prototype, "getQueryParams")
             .mockReturnValue({next: nextMock, useOtp: true});
 
-        const wrapper = shallow(
-            <LoginPageContainer {...props} />
-        );
+        try {
+            const wrapper = shallow(
+                <LoginPageContainer {...props} />
+            );
 
-        expect(wrapper.find(ExternalRedirect).find({otp: props.auth.otp, next: nextMock})).toHaveLength(1);
-
-        getQueryParamsMock.mockRestore();
+            expect(wrapper.find(ExternalRedirect).find({otp: props.auth.otp, next: nextMock})).toHaveLength(1);
+        } finally {
+            getQueryParamsMock.mockRestore();
+        }
     });
 
     it('shows ExternalRedirect if auth is successful', () => {
@@ -187,12 +189,14 @@ describe("LoginPageContainer", () => {
         const getQueryParamsMock = jest.spyOn(LoginPageContainer.prototype, "getQueryParams")
             .mockReturnValue({next: nextMock, useOtp: false});
 
-        const wrapper = shallow(
-            <LoginPageContainer {...props} />
-        );
+        try {
+            const wrapper = shallow(
+                <LoginPageContainer {...props} />
+            );
 
-        expect(wrapper.find(ExternalRedirect).find({next: nextMock})).toHaveLength(1);
-
-        getQueryParamsMock.mockRestore();
+            expect(wrapper.find(ExternalRedirect).find({next: nextMock})).toHaveLength(1);
+        } finally {
+            getQueryParamsMock.mockRestore();
+        }
     });
 });

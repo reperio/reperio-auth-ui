@@ -252,13 +252,15 @@ describe("authActionCreators", () => {
         const requestOTPMock = jest.spyOn(authActionCreators, "requestOTP")
             .mockReturnValue(requestOTPReturnValueMock);
 
-        const getStateMock = jest.fn(() => null);
+        try {
+            const getStateMock = jest.fn(() => null);
 
-        await authActionCreators.executeWithLoadedToken()(dispatchMock, getStateMock);
+            await authActionCreators.executeWithLoadedToken()(dispatchMock, getStateMock);
 
-        expect(requestOTPReturnValueMock).toHaveBeenCalledWith(dispatchMock, getStateMock);
-
-        requestOTPMock.mockRestore();
+            expect(requestOTPReturnValueMock).toHaveBeenCalledWith(dispatchMock, getStateMock);
+        } finally {
+            requestOTPMock.mockRestore();
+        }
     });
 
     describe("submitAuth", () => {
@@ -332,20 +334,22 @@ describe("authActionCreators", () => {
             const generateOTPMock = jest.spyOn(mockCoreApiService.coreApiService.authService, "generateOTP")
                 .mockResolvedValue(generateOTPMockReturnValue);
 
-            await authActionCreators.requestOTP()(dispatchMock, getStateMock);
+            try {
+                await authActionCreators.requestOTP()(dispatchMock, getStateMock);
 
-            expect(dispatchMock).toHaveBeenNthCalledWith(1, {
-                type: authActionTypes.AUTH_OTP_PENDING
-            });
+                expect(dispatchMock).toHaveBeenNthCalledWith(1, {
+                    type: authActionTypes.AUTH_OTP_PENDING
+                });
 
-            expect(dispatchMock).toHaveBeenNthCalledWith(2, {
-                type: authActionTypes.AUTH_OTP_SUCCESSFUL,
-                payload: generateOTPMockReturnValue
-            });
+                expect(dispatchMock).toHaveBeenNthCalledWith(2, {
+                    type: authActionTypes.AUTH_OTP_SUCCESSFUL,
+                    payload: generateOTPMockReturnValue
+                });
 
-            expect(generateOTPMock).toHaveBeenCalled();
-
-            generateOTPMock.mockRestore();
+                expect(generateOTPMock).toHaveBeenCalled();
+            } finally {
+                generateOTPMock.mockRestore();
+            }
         });
 
         it("dispatches correct actions when otp request is unsuccessful and auth is not initialized", async () => {
@@ -366,19 +370,21 @@ describe("authActionCreators", () => {
                     }
                 });
 
-            await authActionCreators.requestOTP()(dispatchMock, getStateMock);
+            try {
+                await authActionCreators.requestOTP()(dispatchMock, getStateMock);
 
-            expect(dispatchMock).toHaveBeenNthCalledWith(1, {
-                type: authActionTypes.AUTH_OTP_PENDING
-            });
+                expect(dispatchMock).toHaveBeenNthCalledWith(1, {
+                    type: authActionTypes.AUTH_OTP_PENDING
+                });
 
-            expect(dispatchMock).toHaveBeenNthCalledWith(2, {
-                type: authActionTypes.AUTH_CLEAR_TOKEN
-            });
+                expect(dispatchMock).toHaveBeenNthCalledWith(2, {
+                    type: authActionTypes.AUTH_CLEAR_TOKEN
+                });
 
-            expect(generateOTPMock).toHaveBeenCalled();
-
-            generateOTPMock.mockRestore();
+                expect(generateOTPMock).toHaveBeenCalled();
+            } finally {
+                generateOTPMock.mockRestore();
+            }
         });
 
         it("dispatches correct actions when otp request is unsuccessful and auth is initialized", async () => {
@@ -404,23 +410,24 @@ describe("authActionCreators", () => {
                         config: null
                     }
                 });
+            try {
+                await authActionCreators.requestOTP()(dispatchMock, getStateMock);
 
-            await authActionCreators.requestOTP()(dispatchMock, getStateMock);
+                expect(dispatchMock).toHaveBeenNthCalledWith(1, {
+                    type: authActionTypes.AUTH_OTP_PENDING
+                });
 
-            expect(dispatchMock).toHaveBeenNthCalledWith(1, {
-                type: authActionTypes.AUTH_OTP_PENDING
-            });
+                expect(dispatchMock).toHaveBeenNthCalledWith(2, {
+                    type: authActionTypes.AUTH_OTP_ERROR,
+                    payload: {
+                        message: "error-401"
+                    }
+                });
 
-            expect(dispatchMock).toHaveBeenNthCalledWith(2, {
-                type: authActionTypes.AUTH_OTP_ERROR,
-                payload: {
-                    message: "error-401"
-                }
-            });
-
-            expect(generateOTPMock).toHaveBeenCalled();
-
-            generateOTPMock.mockRestore();
+                expect(generateOTPMock).toHaveBeenCalled();
+            } finally {
+                generateOTPMock.mockRestore();
+            }
         });
     });
 });
