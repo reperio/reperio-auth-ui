@@ -56,15 +56,17 @@ export class LoginPageContainer extends React.Component<CombinedProps> {
             <React.Fragment>
                 <RepBar />
                 {this.props.auth.isAuthInitialized ? (
-                    <ConnectedLoginPage onSubmit={this.onSubmit.bind(this)}
-                                        navigateToForgotPassword={this.navigateToForgotPassword.bind(this)}
-                                        isSuccessful={this.props.auth.isSuccessful}
-                                        isError={this.props.auth.isError}
-                                        errorMessage={this.props.auth.errorMessage} />
+                    <>
+                        <ConnectedLoginPage onSubmit={this.onSubmit.bind(this)}
+                                            navigateToForgotPassword={this.navigateToForgotPassword.bind(this)}
+                                            isSuccessful={this.props.auth.isSuccessful}
+                                            isError={this.props.auth.isError}
+                                            errorMessage={this.props.auth.errorMessage} />
+                        {this.props.auth.isInProgress || this.props.auth.otpIsInProgress || this.props.auth.otpIsSuccessful ? <LoadingSpinner /> : null}
+                        {useOtp && this.props.auth.otpIsSuccessful ? <ExternalRedirect otp={this.props.auth.otp} next={next} /> : null}
+                        {!useOtp && this.props.auth.isSuccessful ? <ExternalRedirect next={next} /> : null}
+                    </>
                 ) : <LoadingSpinner />}
-                {this.props.auth.isInProgress || this.props.auth.otpIsInProgress || this.props.auth.otpIsSuccessful ? <LoadingSpinner /> : null}
-                {useOtp && this.props.auth.otpIsSuccessful ? <ExternalRedirect otp={this.props.auth.otp} next={next} /> : null}
-                {!useOtp && this.props.auth.isSuccessful ? <ExternalRedirect next={next} /> : null}
             </React.Fragment>
         );
     }

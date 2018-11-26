@@ -100,6 +100,8 @@ describe("LoginPageContainer", () => {
             <LoginPageContainer {...props} />
         );
 
+        console.log(wrapper.debug());
+
         expect(wrapper.find(ConnectedLoginPage)).toHaveLength(1);
 
         const connectedLoginPageWrapper = wrapper.find(ConnectedLoginPage).first();

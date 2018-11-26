@@ -67,7 +67,6 @@ const mockErrorMessageHelper = {
 jest.mock("../errorMessageHelper", () => mockErrorMessageHelper);
 
 import * as authActionCreators from "../authActionCreators";
-import {executeWithLoadedToken} from "../authActionCreators";
 import SpyInstance = jest.SpyInstance;
 import {requestOTP} from "../authActionCreators";
 
@@ -89,18 +88,6 @@ describe("authActionCreators", () => {
     };
 
     describe("initializeAuth", () => {
-        const executeWithLoadedTokenReturnValueMock = jest.fn().mockResolvedValue(null);
-        let executeWithLoadedTokenMock: SpyInstance;
-
-        beforeEach(() => {
-            executeWithLoadedTokenMock = jest.spyOn(authActionCreators, "executeWithLoadedToken")
-                .mockReturnValue(executeWithLoadedTokenReturnValueMock);
-        });
-
-        afterEach(() => {
-            executeWithLoadedTokenMock.mockRestore();
-        });
-
         it("should dispatch AUTH_CLEAR_TOKEN when state.auth.reperioCoreJWT == null", async () => {
             const state = {
                 ...baseState
@@ -114,7 +101,7 @@ describe("authActionCreators", () => {
             });
         });
 
-        it("should dispatch AUTH_LOGIN_SUCCESSFUL and call executeWithLoadedToken when state.auth.reperioCoreJWT != null", async () => {
+        it("should dispatch AUTH_LOGIN_SUCCESSFUL when state.auth.reperioCoreJWT != null", async () => {
             const state = {
                 ...baseState,
                 auth: {
@@ -129,16 +116,11 @@ describe("authActionCreators", () => {
             expect(dispatchMock).toHaveBeenCalledWith({
                 type: authActionTypes.AUTH_LOGIN_SUCCESSFUL
             });
-
-            expect(executeWithLoadedTokenMock).toHaveBeenCalledWith();
-            expect(executeWithLoadedTokenReturnValueMock).toHaveBeenCalledWith(dispatchMock, getStateMock);
         });
     });
 
     describe("setAuthToken", () => {
         let isTokenExpiredMock: SpyInstance;
-        const executeWithLoadedTokenReturnValueMock = jest.fn().mockResolvedValue(null);
-        let executeWithLoadedTokenMock: SpyInstance;
 
         beforeEach(() => {
             isTokenExpiredMock = jest.spyOn(authActionCreators, "isTokenExpired")
@@ -146,13 +128,10 @@ describe("authActionCreators", () => {
                     const currentTimestamp = 1542897273; // 2018-11-22T14:34:33Z
                     return currentTimestamp >= token.exp;
                 });
-            executeWithLoadedTokenMock = jest.spyOn(authActionCreators, "executeWithLoadedToken")
-                .mockReturnValue(executeWithLoadedTokenReturnValueMock);
         });
 
         afterEach(() => {
             isTokenExpiredMock.mockRestore();
-            executeWithLoadedTokenMock.mockRestore();
         });
 
         it("should dispatch AUTH_CLEAR_TOKEN if authToken is null", async () => {
@@ -203,83 +182,13 @@ describe("authActionCreators", () => {
 
             expect(dispatchMock).not.toHaveBeenCalled();
         });
-
-        it("should call executeWithLoadedToken if authToken is not expired and old token is null", async () => {
-            const state = baseState;
-
-            const getStateMock = jest.fn(() => state);
-            await authActionCreators.setAuthToken(testJwtUser1)(dispatchMock, getStateMock);
-
-            expect(executeWithLoadedTokenMock).toHaveBeenCalledWith();
-            expect(executeWithLoadedTokenReturnValueMock).toHaveBeenCalledWith(dispatchMock, getStateMock);
-        });
-
-        it("should call executeWithLoadedToken if authToken is not expired and authToken has a different currentUserId than old token", async () => {
-            const state = {
-                ...baseState,
-                auth: {
-                    ...baseState.auth,
-                    reperioCoreJWT: testJwtUser1
-                }
-            };
-
-            const getStateMock = jest.fn(() => state);
-            await authActionCreators.setAuthToken(testJwtUser2)(dispatchMock, getStateMock);
-
-            expect(executeWithLoadedTokenMock).toHaveBeenCalledWith();
-            expect(executeWithLoadedTokenReturnValueMock).toHaveBeenCalledWith(dispatchMock, getStateMock);
-        });
-
-        it("shouldn't call executeWithLoadedToken if authToken is not expired and authToken has the same currentUserId as old token", async () => {
-            const state = {
-                ...baseState,
-                auth: {
-                    ...baseState.auth,
-                    reperioCoreJWT: testJwtUser2
-                }
-            };
-
-            const getStateMock = jest.fn(() => state);
-            await authActionCreators.setAuthToken(testJwtUser2Secondary)(dispatchMock, getStateMock);
-
-            expect(executeWithLoadedTokenMock).not.toHaveBeenCalled();
-            expect(executeWithLoadedTokenReturnValueMock).not.toHaveBeenCalled();
-        });
-    });
-
-    it("should call requestOTP when calling executeWithLoadedToken", async () => {
-        const requestOTPReturnValueMock = jest.fn().mockResolvedValue(null);
-        const requestOTPMock = jest.spyOn(authActionCreators, "requestOTP")
-            .mockReturnValue(requestOTPReturnValueMock);
-
-        try {
-            const getStateMock = jest.fn(() => null);
-
-            await authActionCreators.executeWithLoadedToken()(dispatchMock, getStateMock);
-
-            expect(requestOTPReturnValueMock).toHaveBeenCalledWith(dispatchMock, getStateMock);
-        } finally {
-            requestOTPMock.mockRestore();
-        }
     });
 
     describe("submitAuth", () => {
-        const executeWithLoadedTokenReturnValueMock = jest.fn().mockResolvedValue(null);
-        let executeWithLoadedTokenMock: SpyInstance;
-
-        beforeEach(() => {
-            executeWithLoadedTokenMock = jest.spyOn(authActionCreators, "executeWithLoadedToken")
-                .mockReturnValue(executeWithLoadedTokenReturnValueMock);
-        });
-
-        afterEach(() => {
-            executeWithLoadedTokenMock.mockRestore();
-        });
-
         it("dispatches correct actions when submitted with valid credentials", async () => {
             const state = baseState;
             const getStateMock = jest.fn(() => state);
-            await authActionCreators.submitAuth("succeed@reper.io", "password", false)(dispatchMock, getStateMock);
+            await authActionCreators.submitAuth("succeed@reper.io", "password")(dispatchMock, getStateMock);
 
             expect(dispatchMock).toHaveBeenNthCalledWith(1, {
                 type: authActionTypes.AUTH_LOGIN_PENDING
@@ -290,27 +199,10 @@ describe("authActionCreators", () => {
             });
         });
 
-        it("does not call executeWithLoadedToken if requestOtp is false", async () => {
-            const state = baseState;
-            const getStateMock = jest.fn(() => state);
-            await authActionCreators.submitAuth("succeed@reper.io", "password", false)(dispatchMock, getStateMock);
-
-            expect(executeWithLoadedTokenMock).not.toHaveBeenCalled();
-        });
-
-        it("does call executeWithLoadedToken if requestOtp is true", async () => {
-            const state = baseState;
-            const getStateMock = jest.fn(() => state);
-            await authActionCreators.submitAuth("succeed@reper.io", "password", true)(dispatchMock, getStateMock);
-
-            expect(executeWithLoadedTokenMock).toHaveBeenCalled();
-            expect(executeWithLoadedTokenReturnValueMock).toHaveBeenCalledWith(dispatchMock, getStateMock);
-        });
-
         it("dispatches correct actions when submitted with invalid credentials", async () => {
             const state = baseState;
             const getStateMock = jest.fn(() => state);
-            await authActionCreators.submitAuth("fail401@reper.io", "password", false)(dispatchMock, getStateMock);
+            await authActionCreators.submitAuth("fail401@reper.io", "password")(dispatchMock, getStateMock);
 
             expect(dispatchMock).toHaveBeenNthCalledWith(1, {
                 type: authActionTypes.AUTH_LOGIN_PENDING
