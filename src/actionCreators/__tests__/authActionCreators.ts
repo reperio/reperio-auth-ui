@@ -18,6 +18,7 @@ const mockCoreApiService = {
                 return JSON.parse(window.atob(base64));
             },
             generateOTP: jest.fn(),
+            validateCurrentJWT: jest.fn(),
             async login(primaryEmailAddress: string, password: string) {
                 if (primaryEmailAddress === "succeed@reper.io") {
                     return;
@@ -101,7 +102,7 @@ describe("authActionCreators", () => {
             });
         });
 
-        it("should dispatch AUTH_LOGIN_SUCCESSFUL when state.auth.reperioCoreJWT != null", async () => {
+        it("should dispatch AUTH_LOGIN_SUCCESSFUL when state.auth.reperioCoreJWT != null and validateCurrentJWT returns successful", async () => {
             const state = {
                 ...baseState,
                 auth: {
@@ -110,12 +111,54 @@ describe("authActionCreators", () => {
                 }
             };
 
-            const getStateMock = jest.fn(() => state);
-            await authActionCreators.initializeAuth()(dispatchMock, getStateMock);
+            const validateCurrentJWTMock = jest.spyOn(mockCoreApiService.coreApiService.authService, "validateCurrentJWT")
+                .mockResolvedValue(null);
 
-            expect(dispatchMock).toHaveBeenCalledWith({
-                type: authActionTypes.AUTH_LOGIN_SUCCESSFUL
-            });
+            try {
+                const getStateMock = jest.fn(() => state);
+                await authActionCreators.initializeAuth()(dispatchMock, getStateMock);
+
+                expect(dispatchMock).toHaveBeenCalledWith({
+                    type: authActionTypes.AUTH_LOGIN_SUCCESSFUL
+                });
+            } finally {
+                validateCurrentJWTMock.mockRestore();
+            }
+        });
+
+        it("should dispatch AUTH_CLEAR_TOKEN when state.auth.reperioCoreJWT != null and validateCurrentJWT returns rejected", async () => {
+            const state = {
+                ...baseState,
+                auth: {
+                    ...baseState.auth,
+                    reperioCoreJWT: testJwtUser1
+                }
+            };
+
+            const validateCurrentJWTMock = jest.spyOn(mockCoreApiService.coreApiService.authService, "validateCurrentJWT")
+                .mockRejectedValue({
+                    config: null,
+                    name: null,
+                    message: null,
+                    response: {
+                        data: null,
+                        status: 401,
+                        statusText: null,
+                        headers: null,
+                        config: null
+                    }
+                });
+
+            try {
+                const getStateMock = jest.fn(() => state);
+                await authActionCreators.initializeAuth()(dispatchMock, getStateMock);
+
+                expect(dispatchMock).toHaveBeenCalledWith({
+                    type: authActionTypes.AUTH_CLEAR_TOKEN
+                });
+            } finally {
+                validateCurrentJWTMock.mockRestore();
+            }
         });
     });
 

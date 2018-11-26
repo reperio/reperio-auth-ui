@@ -13,10 +13,19 @@ export const initializeAuth = () => async (dispatch: Dispatch<State>, getState: 
     const state = getState();
 
     if (state.auth.reperioCoreJWT != null) {
-
-        dispatch({
-            type: authActionTypes.AUTH_LOGIN_SUCCESSFUL
-        });
+        try {
+            await coreApiService.authService.validateCurrentJWT();
+            dispatch({
+                type: authActionTypes.AUTH_LOGIN_SUCCESSFUL
+            });
+        } catch (e) {
+            if (e.response.status !== 401) {
+                console.error(e);
+            }
+            dispatch({
+                type: authActionTypes.AUTH_CLEAR_TOKEN
+            });
+        }
     } else {
         dispatch({
             type: authActionTypes.AUTH_CLEAR_TOKEN
