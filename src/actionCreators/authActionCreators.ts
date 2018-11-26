@@ -13,11 +13,19 @@ export const initializeAuth = () => async (dispatch: Dispatch<State>, getState: 
     const state = getState();
 
     if (state.auth.reperioCoreJWT != null) {
-
-        dispatch({
-            type: authActionTypes.AUTH_LOGIN_SUCCESSFUL
-        });
-        await executeWithLoadedToken()(dispatch, getState);
+        try {
+            await coreApiService.authService.validateCurrentJWT();
+            dispatch({
+                type: authActionTypes.AUTH_LOGIN_SUCCESSFUL
+            });
+        } catch (e) {
+            if (e.response.status !== 401) {
+                console.error(e);
+            }
+            dispatch({
+                type: authActionTypes.AUTH_CLEAR_TOKEN
+            });
+        }
     } else {
         dispatch({
             type: authActionTypes.AUTH_CLEAR_TOKEN
@@ -28,7 +36,6 @@ export const initializeAuth = () => async (dispatch: Dispatch<State>, getState: 
 export const setAuthToken = (authToken: string) => async (dispatch: Dispatch<State>, getState: () => State) => {
     const state = getState();
     const oldAuthToken = state.auth.reperioCoreJWT;
-    const oldParsedToken = oldAuthToken == null ? null : coreApiService.authService.parseJwt(oldAuthToken);
 
     const parsedToken = authToken == null ? null : coreApiService.authService.parseJwt(authToken);
 
@@ -41,10 +48,6 @@ export const setAuthToken = (authToken: string) => async (dispatch: Dispatch<Sta
                 payload: {authToken}
             });
         }
-
-        if (oldParsedToken == null || oldParsedToken.currentUserId !== parsedToken.currentUserId) {
-            await executeWithLoadedToken()(dispatch, getState);
-        }
     } else {
         // if the provided authToken is null or it's expired...
 
@@ -54,11 +57,7 @@ export const setAuthToken = (authToken: string) => async (dispatch: Dispatch<Sta
     }
 };
 
-export const executeWithLoadedToken = () => async (dispatch: Dispatch<State>, getState: () => State) => {
-    await requestOTP()(dispatch, getState);
-};
-
-export const submitAuth = (primaryEmailAddress: string, password: string, requestOtp: boolean) => async (dispatch: Dispatch<State>, getState: () => State) => {
+export const submitAuth = (primaryEmailAddress: string, password: string) => async (dispatch: Dispatch<State>, getState: () => State) => {
     dispatch({
         type: authActionTypes.AUTH_LOGIN_PENDING
     });
@@ -69,10 +68,6 @@ export const submitAuth = (primaryEmailAddress: string, password: string, reques
         dispatch({
             type: authActionTypes.AUTH_LOGIN_SUCCESSFUL
         });
-
-        if (requestOtp) {
-            await executeWithLoadedToken()(dispatch, getState);
-        }
 
     } catch (e) {
         if (e.response.status !== 401) {

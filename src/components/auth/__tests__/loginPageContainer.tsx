@@ -9,6 +9,7 @@ import LoadingSpinner from "../../loadingSpinner";
 import {ConnectedLoginPage, LoginFormData} from "../loginPage";
 import SpyInstance = jest.SpyInstance;
 import ExternalRedirect from "../../externalRedirect";
+import {ConnectedHandleOTP} from "../handleOTP";
 
 describe("LoginPageContainer", () => {
     const baseProps: LoginPageContainerProps = {
@@ -133,30 +134,13 @@ describe("LoginPageContainer", () => {
         expect(wrapper.find(LoadingSpinner)).toHaveLength(1);
     });
 
-    it('shows LoadingSpinner if auth otp in progress', () => {
+    it('shows ConnectedHandleOTP for otp if auth otp is successful', () => {
         const props: LoginPageContainerProps = {
             ...baseProps,
             auth: {
                 ...baseProps.auth,
                 isAuthInitialized: true,
-                otpIsInProgress: true
-            }
-        } as any;
-
-        const wrapper = shallow(
-            <LoginPageContainer {...props} />
-        );
-
-        expect(wrapper.find(LoadingSpinner)).toHaveLength(1);
-    });
-
-    it('shows ExternalRedirect for otp if auth otp is successful', () => {
-        const props: LoginPageContainerProps = {
-            ...baseProps,
-            auth: {
-                ...baseProps.auth,
-                isAuthInitialized: true,
-                otpIsSuccessful: true
+                isSuccessful: true
             }
         } as any;
 
@@ -169,7 +153,7 @@ describe("LoginPageContainer", () => {
                 <LoginPageContainer {...props} />
             );
 
-            expect(wrapper.find(ExternalRedirect).find({otp: props.auth.otp, next: nextMock})).toHaveLength(1);
+            expect(wrapper.find(ConnectedHandleOTP).find({next: nextMock})).toHaveLength(1);
         } finally {
             getQueryParamsMock.mockRestore();
         }
