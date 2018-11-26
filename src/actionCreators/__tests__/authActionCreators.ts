@@ -3,10 +3,8 @@ import {AxiosError} from "axios";
 import {authActionTypes} from "../../actionTypes/authActionTypes";
 import {State} from "../../store/state";
 
-const testJwtUser1 = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1NDI4MjQ0NzMsImV4cCI6MTU0MjkxMDg3MywiY3VycmVudFVzZXJJZCI6MX0.TCBF85Gx3fZOXJFlQXk7yGTK99lX6KXUPiD0ydateiA"; // created 2018-11-21T18:21:13Z, expires 2018-11-22T18:21:13Z, currentUserId: 1
-const testJwtExpired = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1NDI3MzgwNzMsImV4cCI6MTU0MjgyNDQ3MywiY3VycmVudFVzZXJJZCI6MX0.8xrI-nfpAYT_cDB-AzLdhrIqU6ZX3zeKK2_wUJldFWE"; // created 2018-11-20T18:21:13Z, expires 2018-11-21T18:21:13Z, currentUserId: 1
-const testJwtUser2 = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1NDI4MjQ0NzMsImV4cCI6MTU0MjkxMDg3MywiY3VycmVudFVzZXJJZCI6Mn0.7zDyFUl1UU3kX7lwiDPKScxonItwh_Dzm-BOvDKxyJc"; // created 2018-11-21T18:21:13Z, expires 2018-11-22T18:21:13Z, currentUserId: 2
-const testJwtUser2Secondary = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1NDI4MjU0NzMsImV4cCI6MTU0MjkxMTg3MywiY3VycmVudFVzZXJJZCI6Mn0.wZukKXxElGN49ynWvA88sGlW3VOdiQl5HILW-O_FJe8"; // created 2018-11-21T18:37:53Z, expires 2018-11-22T18:37:53Z, currentUserId: 2
+const testValidJwt = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1NDI4MjQ0NzMsImV4cCI6MTU0MjkxMDg3MywiY3VycmVudFVzZXJJZCI6MX0.TCBF85Gx3fZOXJFlQXk7yGTK99lX6KXUPiD0ydateiA"; // created 2018-11-21T18:21:13Z, expires 2018-11-22T18:21:13Z, currentUserId: 1
+const testExpiredJwt = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1NDI3MzgwNzMsImV4cCI6MTU0MjgyNDQ3MywiY3VycmVudFVzZXJJZCI6MX0.8xrI-nfpAYT_cDB-AzLdhrIqU6ZX3zeKK2_wUJldFWE"; // created 2018-11-20T18:21:13Z, expires 2018-11-21T18:21:13Z, currentUserId: 1
 
 const mockCoreApiService = {
     coreApiService: {
@@ -107,7 +105,7 @@ describe("authActionCreators", () => {
                 ...baseState,
                 auth: {
                     ...baseState.auth,
-                    reperioCoreJWT: testJwtUser1
+                    reperioCoreJWT: testValidJwt
                 }
             };
 
@@ -131,7 +129,7 @@ describe("authActionCreators", () => {
                 ...baseState,
                 auth: {
                     ...baseState.auth,
-                    reperioCoreJWT: testJwtUser1
+                    reperioCoreJWT: testValidJwt
                 }
             };
 
@@ -152,6 +150,8 @@ describe("authActionCreators", () => {
             try {
                 const getStateMock = jest.fn(() => state);
                 await authActionCreators.initializeAuth()(dispatchMock, getStateMock);
+
+                expect(validateCurrentJWTMock).toHaveBeenCalled();
 
                 expect(dispatchMock).toHaveBeenCalledWith({
                     type: authActionTypes.AUTH_CLEAR_TOKEN
@@ -192,7 +192,7 @@ describe("authActionCreators", () => {
             const state = baseState;
 
             const getStateMock = jest.fn(() => state);
-            await authActionCreators.setAuthToken(testJwtExpired)(dispatchMock, getStateMock);
+            await authActionCreators.setAuthToken(testExpiredJwt)(dispatchMock, getStateMock);
 
             expect(dispatchMock).toHaveBeenCalledWith({
                 type: authActionTypes.AUTH_CLEAR_TOKEN
@@ -203,11 +203,11 @@ describe("authActionCreators", () => {
             const state = baseState;
 
             const getStateMock = jest.fn(() => state);
-            await authActionCreators.setAuthToken(testJwtUser1)(dispatchMock, getStateMock);
+            await authActionCreators.setAuthToken(testValidJwt)(dispatchMock, getStateMock);
 
             expect(dispatchMock).toHaveBeenCalledWith({
                 type: authActionTypes.AUTH_SET_TOKEN,
-                payload: {authToken: testJwtUser1}
+                payload: {authToken: testValidJwt}
             });
         });
 
@@ -216,12 +216,12 @@ describe("authActionCreators", () => {
                 ...baseState,
                 auth: {
                     ...baseState.auth,
-                    reperioCoreJWT: testJwtUser1
+                    reperioCoreJWT: testValidJwt
                 }
             };
 
             const getStateMock = jest.fn(() => state);
-            await authActionCreators.setAuthToken(testJwtUser1)(dispatchMock, getStateMock);
+            await authActionCreators.setAuthToken(testValidJwt)(dispatchMock, getStateMock);
 
             expect(dispatchMock).not.toHaveBeenCalled();
         });
