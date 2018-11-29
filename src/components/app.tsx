@@ -1,9 +1,10 @@
 import React from 'react';
-import Routes from './routes';
+import {Routes} from './routes';
 
-const App = () => (
-    <React.Fragment>
-        <Routes/>
-    </React.Fragment>
+export const App = () => (
+    <div className="app-main">
+        <div className="page-container">
+            <Routes/>
+        </div>
+    </div>
 );
-export default App;

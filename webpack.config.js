@@ -20,7 +20,7 @@ module.exports = {
                 use: ['style-loader', 'css-loader', 'sass-loader']
             },
             {
-                test: /\.(png|gif|jpg|cur)$/i,
+                test: /\.(png|gif|jpg|cur|svg)$/i,
                 loader: 'url-loader', options: { limit: 8192 }
             }
         ]
@@ -38,7 +38,9 @@ module.exports = {
             inject: true
         }),
         new webpack.DefinePlugin({
-            API_URL: JSON.stringify(process.env.API_URL || 'http://localhost:3000/api')
+            API_URL: JSON.stringify(process.env.API_URL || 'http://localhost:3000/api'),
+            REDIRECT_URL: JSON.stringify(process.env.REDIRECT_URL || 'http://localhost:8080'),
+            PERMITTED_POST_MESSAGE_ORIGINS: JSON.stringify(process.env.PERMITTED_POST_MESSAGE_ORIGINS || ['http://localhost:8080'])
         })
     ]
 };

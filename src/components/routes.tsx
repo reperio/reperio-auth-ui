@@ -1,19 +1,28 @@
 import React from 'react'
-
 import { Route, Switch, Link } from "react-router-dom";
-import { Redirect } from "react-router";
+import {Redirect, RouteComponentProps} from "react-router";
+import queryString from "query-string";
 
-const Hello = () => <p>Hello <Link to='/goodbye'>Goodbye</Link></p>;
-const Goodbye = () => <p>Goodbye <Link to='/hello'>Hello</Link></p>;
+import {ConnectedLoginPageContainer} from "./auth/loginPageContainer";
 
-const Routes = (props: any) => (
-    <Switch>
-        <Route exact path="/hello" component={Hello} />
-        <Route exact path="/goodbye" component={Goodbye} />
-        <Route>
-            <Redirect to="/hello"/>
-        </Route>
-    </Switch>
+
+const RedirectWithQueryString = (props: RouteComponentProps) => {
+    const queryParams = queryString.parse(props.location.search);
+
+    return (
+        <Redirect to={{
+            pathname: "/login",
+            search: queryString.stringify({next: queryParams.next})
+        }} {...props} />
+    );
+};
+
+export const Routes = () => (
+    <div className="app-content">
+        <Switch>
+            <Route exact path="/login" component={ConnectedLoginPageContainer} />
+            <Route exact path="/auth" component={null} />
+            <Route component={RedirectWithQueryString} />
+        </Switch>
+    </div>
 );
-
-export default Routes;
