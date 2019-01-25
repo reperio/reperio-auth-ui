@@ -41,7 +41,7 @@ module.exports = {
         new webpack.DefinePlugin({
             API_URL: JSON.stringify(process.env.API_URL || 'http://localhost:3000/api'),
             REDIRECT_URL: JSON.stringify(process.env.REDIRECT_URL || 'http://localhost:8080'),
-            PERMITTED_POST_MESSAGE_ORIGINS: JSON.stringify(process.env.PERMITTED_POST_MESSAGE_ORIGINS || ['http://localhost:8080'])
+            PERMITTED_POST_MESSAGE_ORIGINS: JSON.stringify(process.env.PERMITTED_POST_MESSAGE_ORIGINS || ['http://localhost:8080', 'http://localhost:8082'])
         })
     ]
 };
