@@ -4,6 +4,7 @@ const webpack = require('webpack');
 
 module.exports = {
     entry: './src/index.tsx',
+    devtool: 'source-map',
     output: {
         filename: 'index.js',
         path: path.resolve(__dirname, 'dist')
