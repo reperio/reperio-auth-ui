@@ -12,3 +12,4 @@ services:
       - .:/opt/app
       - /opt/app/node_modules
       - /opt/app/dist
+    command: ["yarn", "install-packages-then-start"]
