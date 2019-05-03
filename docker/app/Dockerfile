@@ -24,8 +24,8 @@ RUN npm install -g yarn
 
 COPY . .
 
-RUN rm -r /opt/app/node_modules
-RUN rm -r /opt/app/dist
+RUN rm -rf /opt/app/node_modules
+RUN rm -rf /opt/app/dist
 RUN yarn
 
 CMD ["yarn", "start"]
