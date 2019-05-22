@@ -90,6 +90,23 @@ export function authReducer(state: StateAuth = initialState.auth, action: {type:
                 otpIsSuccessful: false
             }
         }
+        case authActionTypes.AUTH_FORGOT_PASSWORD_PENDING: {
+            return {
+                ...state
+            }
+        }
+        case authActionTypes.AUTH_FORGOT_PASSWORD_SUCCESSFUL: {
+            return {
+                ...state
+            }
+        }
+        case authActionTypes.AUTH_FORGOT_PASSWORD_ERROR: {
+            const {message} = action.payload;
+            return {
+                ...state,
+                errorMessage: message
+            }
+        }
         default: {
             return state;
         }

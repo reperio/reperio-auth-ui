@@ -28,7 +28,7 @@ export const LoginFormFields = (props: {navigateToForgotPassword(): void}) => (
         <div className="row">
             <div className="r-row-child">
                 <ButtonElement type="submit" name="signin" color="success" text="Sign In" />
-                {/*<ButtonElement type="button" color="neutral" text="Forgot Password" onClick={() => props.navigateToForgotPassword()} />*/}
+                <ButtonElement type="button" color="neutral" text="Forgot Password" onClick={() => props.navigateToForgotPassword()} />
             </div>
         </div>
     </>

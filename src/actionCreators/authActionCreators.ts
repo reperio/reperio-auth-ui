@@ -114,3 +114,28 @@ export const requestOTP = () => async (dispatch: Dispatch<State>, getState: () =
         }
     }
 };
+
+export const submitForgotPassword = (primaryEmailAddress: string) => async (dispatch: Dispatch<State>, getState: () => State) => {
+    dispatch({
+        type: authActionTypes.AUTH_FORGOT_PASSWORD_PENDING
+    });
+
+    try {
+        await coreApiService.authService.forgotPassword(primaryEmailAddress);
+
+        dispatch({
+            type: authActionTypes.AUTH_FORGOT_PASSWORD_SUCCESSFUL
+        });
+    } catch (e) {
+        if (e.response.status !== 401) {
+            console.error(e);
+        }
+
+        dispatch({
+            type: authActionTypes.AUTH_FORGOT_PASSWORD_ERROR,
+            payload: {
+                message: getErrorMessageFromStatusCode(e.response != null ? e.response.status : null)
+            }
+        });
+    }
+}

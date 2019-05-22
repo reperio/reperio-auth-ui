@@ -3,6 +3,7 @@ import {connect} from "react-redux";
 import { RouteComponentProps } from 'react-router';
 import {bindActionCreators} from "redux";
 import queryString from "query-string";
+import {history} from "../../store/history";
 
 import {submitAuth, initializeAuth} from "../../actionCreators/authActionCreators";
 import { State } from '../../store/state';
@@ -46,7 +47,7 @@ export class LoginPageContainer extends React.Component<CombinedProps> {
     };
 
     async navigateToForgotPassword() {
-        // history.push('/forgotPassword');
+        history.push('/forgotPassword');
         console.log("navigateToForgotPassword")
     };
 
