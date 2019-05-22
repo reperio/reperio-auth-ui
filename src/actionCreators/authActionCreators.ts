@@ -3,6 +3,7 @@ import {State} from "../store/state";
 import {authActionTypes} from "../actionTypes/authActionTypes";
 import {getErrorMessageFromStatusCode} from "./errorMessageHelper";
 import {coreApiService} from "../services/coreApiService";
+import {history} from "../store/history";
 
 export const isTokenExpired = (token: {exp: number}): boolean => {
     const currentTimestamp = (new Date()).getTime() / 1000;
@@ -138,4 +139,36 @@ export const submitForgotPassword = (primaryEmailAddress: string) => async (disp
             }
         });
     }
+};
+
+export const submitResetPassword = (token: string, password: string, confirmPassword: string) => async (dispatch: Dispatch<State>, getState: () => State) => {
+    dispatch({
+        type: authActionTypes.AUTH_RESET_PASSWORD_PENDING
+    });
+
+    try {
+        await coreApiService.authService.resetPassword(token, password, confirmPassword);
+
+        dispatch({
+            type: authActionTypes.AUTH_RESET_PASSWORD_SUCCESSFUL
+        });
+        history.push('/login');
+    } catch (e) {
+        if (e.response.status !== 401) {
+            console.error(e);
+        }
+
+        dispatch({
+            type: authActionTypes.AUTH_RESET_PASSWORD_ERROR,
+            payload: {
+                message: getErrorMessageFromStatusCode(e.resetPassword != null ? e.response.status : null)
+            }
+        });
+    }
+}
+
+export const reset = () => async (dispatch: Dispatch<State>) => {
+    dispatch({
+        type: authActionTypes.AUTH_RESET_UI
+    });
 }
