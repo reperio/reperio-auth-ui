@@ -4,48 +4,46 @@ import { TextboxElement, ButtonElement } from '@reperio/ui-components';
 
 const rowMargin = "4em";
 
-export const LoginFormHeader = () => (
+export const ResetPasswordFormHeader = () => (
     <div className="row" style={{marginTop: rowMargin}}>
         <div className="r-row-child">
-            <h2>Login</h2>
+            <h2>Reset Password</h2>
             <hr />
         </div>
     </div>
 );
 
-export const LoginFormFields = (props: {navigateToForgotPassword(): void}) => (
+export const ResetPasswordFormFields = () => (
     <>
         <div className="row">
             <div className="r-row-child">
-                <Field name="primaryEmailAddress" placeholder="Email" type="text" component={TextboxElement} />
+                <Field name="password" placeholder="Enter New Password" type="password" component={TextboxElement} />
             </div>
         </div>
         <div className="row">
             <div className="r-row-child">
-                <Field name="password" placeholder="Password" type="password" component={TextboxElement} />
+                <Field name="confirmPassword" placeholder="Confirm New Password" type="password" component={TextboxElement} />
             </div>
         </div>
         <div className="row">
             <div className="r-row-child">
-                <ButtonElement type="submit" name="signin" color="success" text="Sign In" />
-                <ButtonElement type="button" color="neutral" text="Forgot Password" onClick={() => props.navigateToForgotPassword()} />
+                <ButtonElement type="submit" name="signin" color="success" text="Submit" />
             </div>
         </div>
     </>
 );
 
 
-export interface LoginFormProps {
+export interface ResetPasswordFormProps {
     onSubmit(e: FormEvent): void;
-    navigateToForgotPassword(): void;
     isSuccessful: boolean;
     isError: boolean;
     errorMessage: string;
 }
 
-export const LoginForm = (props: LoginFormProps) => (
+export const ResetPasswordForm = (props: ResetPasswordFormProps) => (
     <form onSubmit={(e) => props.onSubmit(e)}>
-        <LoginFormHeader />
+        <ResetPasswordFormHeader />
         {props.isError ?
             <div className="row login-auth-error">
                 <div className="r-row-child">
@@ -60,6 +58,6 @@ export const LoginForm = (props: LoginFormProps) => (
                 </div>
             </div>
             : null}
-        <LoginFormFields navigateToForgotPassword={props.navigateToForgotPassword} />
+        <ResetPasswordFormFields />
     </form>
 );

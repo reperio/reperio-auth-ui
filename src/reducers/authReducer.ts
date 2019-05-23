@@ -90,6 +90,71 @@ export function authReducer(state: StateAuth = initialState.auth, action: {type:
                 otpIsSuccessful: false
             }
         }
+        case authActionTypes.AUTH_FORGOT_PASSWORD_PENDING: {
+            return {
+                ...state,
+                isInProgress: true,
+                isSuccessful: false,
+                isError: false,
+                errorMessage: null,
+            }
+        }
+        case authActionTypes.AUTH_FORGOT_PASSWORD_SUCCESSFUL: {
+            return {
+                ...state,
+                isInProgress: false,
+                isSuccessful: true,
+                isError: false,
+                errorMessage: null,
+            }
+        }
+        case authActionTypes.AUTH_FORGOT_PASSWORD_ERROR: {
+            const {message} = action.payload;
+            return {
+                ...state,
+                isInProgress: false,
+                isSuccessful: false,
+                isError: true,
+                errorMessage: message
+            }
+        }
+        case authActionTypes.AUTH_RESET_PASSWORD_PENDING: {
+            return {
+                ...state,
+                isInProgress: true,
+                isSuccessful: false,
+                isError: false,
+                errorMessage: null,
+            }
+        }
+        case authActionTypes.AUTH_RESET_PASSWORD_SUCCESSFUL: {
+            return {
+                ...state,
+                isInProgress: false,
+                isSuccessful: true,
+                isError: false,
+                errorMessage: null,
+            }
+        }
+        case authActionTypes.AUTH_RESET_PASSWORD_ERROR: {
+            const {message} = action.payload;
+            return {
+                ...state,
+                isInProgress: false,
+                isSuccessful: false,
+                isError: true,
+                errorMessage: message
+            }
+        }
+        case authActionTypes.AUTH_RESET_UI: {
+            return {
+                ...state,
+                isInProgress: false,
+                isSuccessful: false,
+                isError: false,
+                errorMessage: null
+            }
+        }
         default: {
             return state;
         }
