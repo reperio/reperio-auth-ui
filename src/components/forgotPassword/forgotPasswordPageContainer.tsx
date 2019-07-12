@@ -11,11 +11,7 @@ import {ConnectedForgotPasswordPage, ForgotPasswordFormData} from "./forgotPassw
 import LoadingSpinner from "../loadingSpinner";
 
 import repBarSrc from '../../assets/rep-bar.svg';
-export const RepBar = () => (
-    <div style={{width: "100%", height: "54px", overflow: "hidden"}}>
-        <img src={repBarSrc} style={{width: "100%" }} />
-    </div>
-);
+import {RepBar} from '../auth/loginPageContainer';
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = ReturnType<typeof mapActionToProps>;
