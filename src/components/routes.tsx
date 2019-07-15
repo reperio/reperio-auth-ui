@@ -5,7 +5,8 @@ import queryString from "query-string";
 
 import {ConnectedLoginPageContainer} from "./auth/loginPageContainer";
 import {ConnectedForgotPasswordPageContainer} from "./forgotPassword/forgotPasswordPageContainer";
-import {ConnectedResetPasswordPageContainer} from "./resetPassword/resetPasswordPageContainer";
+import {ConnectedResetPasswordPageContainer} from "./passwordManagement/passwordManagementPageContainer";
+
 
 
 const RedirectWithQueryString = (props: RouteComponentProps) => {

@@ -8,7 +8,7 @@ import {history} from "../../store/history";
 import {submitResetPassword, initializeAuth} from "../../actionCreators/authActionCreators";
 import { State } from '../../store/state';
 
-import {ConnectedResetPasswordPage, ResetPasswordFormData} from "./resetPasswordPage";
+import {ConnectedResetPasswordPage, ResetPasswordFormData} from "./passwordManagementPage";
 import LoadingSpinner from "../loadingSpinner";
 
 import repBarSrc from '../../assets/rep-bar.svg';

@@ -3,7 +3,7 @@ import { reduxForm, InjectedFormProps } from 'redux-form';
 import { Wrapper } from '@reperio/ui-components';
 import {StateAuth} from "../../store/state";
 import {LoginReperioLogo} from "../auth/loginReperioLogo";
-import {ResetPasswordForm} from "./resetPasswordForm";
+import {ResetPasswordForm} from "./passwordManagementForm";
 
 export interface ResetPasswordFormData {
     password: string;
