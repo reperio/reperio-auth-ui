@@ -5,7 +5,7 @@ import queryString from "query-string";
 
 import {ConnectedLoginPageContainer} from "./auth/loginPageContainer";
 import {ConnectedForgotPasswordPageContainer} from "./forgotPassword/forgotPasswordPageContainer";
-import {ConnectedResetPasswordPageContainer} from "./passwordManagement/passwordManagementPageContainer";
+import {ConnectedPasswordManagementPageContainer} from "./passwordManagement/passwordManagementPageContainer";
 
 
 
@@ -25,7 +25,7 @@ export const Routes = () => (
         <Switch>
             <Route exact path="/login" component={ConnectedLoginPageContainer} />
             <Route exact path="/forgotPassword" component={ConnectedForgotPasswordPageContainer} />
-            <Route exact path="/resetPassword/:token" component={ConnectedResetPasswordPageContainer} />
+            <Route exact path="/passwordManagement/:token/:action" component={ConnectedPasswordManagementPageContainer} />
             <Route exact path="/auth" component={null} />
             <Route component={RedirectWithQueryString} />
         </Switch>

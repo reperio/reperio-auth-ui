@@ -141,7 +141,7 @@ export const submitForgotPassword = (primaryEmailAddress: string) => async (disp
     }
 };
 
-export const submitResetPassword = (token: string, password: string, confirmPassword: string) => async (dispatch: Dispatch<State>, getState: () => State) => {
+export const submitPasswordManagement = (token: string, password: string, confirmPassword: string, next: string) => async (dispatch: Dispatch<State>, getState: () => State) => {
     dispatch({
         type: authActionTypes.AUTH_RESET_PASSWORD_PENDING
     });
