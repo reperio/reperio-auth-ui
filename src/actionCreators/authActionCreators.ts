@@ -141,7 +141,7 @@ export const submitForgotPassword = (primaryEmailAddress: string) => async (disp
     }
 };
 
-export const submitResetPassword = (token: string, password: string, confirmPassword: string) => async (dispatch: Dispatch<State>, getState: () => State) => {
+export const submitPasswordManagement = (token: string, password: string, confirmPassword: string, next: string) => async (dispatch: Dispatch<State>, getState: () => State) => {
     dispatch({
         type: authActionTypes.AUTH_RESET_PASSWORD_PENDING
     });
@@ -152,7 +152,12 @@ export const submitResetPassword = (token: string, password: string, confirmPass
         dispatch({
             type: authActionTypes.AUTH_RESET_PASSWORD_SUCCESSFUL
         });
-        history.push('/login');
+
+        if (next) {
+            history.push(`/login?next=${encodeURIComponent(next)}`);
+        } else {
+            history.push('/login');
+        }
     } catch (e) {
         if (e.response.status !== 401) {
             console.error(e);

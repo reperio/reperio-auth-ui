@@ -13,7 +13,16 @@ export const ResetPasswordFormHeader = () => (
     </div>
 );
 
-export const ResetPasswordFormFields = () => (
+export const CreatePasswordFormHeader = () => (
+    <div className="row" style={{marginTop: rowMargin}}>
+        <div className="r-row-child">
+            <h2>Create Password</h2>
+            <hr />
+        </div>
+    </div>
+);
+
+export const PasswordManagementFormFields = () => (
     <>
         <div className="row">
             <div className="r-row-child">
@@ -34,16 +43,17 @@ export const ResetPasswordFormFields = () => (
 );
 
 
-export interface ResetPasswordFormProps {
+export interface PasswordManagementFormProps {
     onSubmit(e: FormEvent): void;
     isSuccessful: boolean;
     isError: boolean;
+    createPassword: boolean;
     errorMessage: string;
 }
 
-export const ResetPasswordForm = (props: ResetPasswordFormProps) => (
+export const PasswordManagementForm = (props: PasswordManagementFormProps) => (
     <form onSubmit={(e) => props.onSubmit(e)}>
-        <ResetPasswordFormHeader />
+        {props.createPassword ? <CreatePasswordFormHeader /> : <ResetPasswordFormHeader />}
         {props.isError ?
             <div className="row login-auth-error">
                 <div className="r-row-child">
@@ -58,6 +68,6 @@ export const ResetPasswordForm = (props: ResetPasswordFormProps) => (
                 </div>
             </div>
             : null}
-        <ResetPasswordFormFields />
+        <PasswordManagementFormFields />
     </form>
 );

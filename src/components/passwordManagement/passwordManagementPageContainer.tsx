@@ -5,20 +5,19 @@ import {bindActionCreators} from "redux";
 import queryString from "query-string";
 import {history} from "../../store/history";
 
-import {submitResetPassword, initializeAuth} from "../../actionCreators/authActionCreators";
+import {submitPasswordManagement, initializeAuth} from "../../actionCreators/authActionCreators";
 import { State } from '../../store/state';
 
-import {ConnectedResetPasswordPage, ResetPasswordFormData} from "./resetPasswordPage";
+import {ConnectedPasswordManagementPage, PasswordManagementFormData} from "./passwordManagementPage";
 import LoadingSpinner from "../loadingSpinner";
 
-import repBarSrc from '../../assets/rep-bar.svg';
 import {RepBar} from '../auth/loginPageContainer';
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = ReturnType<typeof mapActionToProps>;
 export type CombinedProps = RouteComponentProps<any> & StateProps & DispatchProps;
 
-export class resetPasswordPageContainer extends React.Component<CombinedProps> {
+export class passwordManagementPageContainer extends React.Component<CombinedProps> {
 
     componentDidMount() {
         if (!this.props.auth.isAuthInitialized) {
@@ -26,21 +25,26 @@ export class resetPasswordPageContainer extends React.Component<CombinedProps> {
         }
     }
     
-    async onSubmit(values: ResetPasswordFormData) {
+    async onSubmit(values: PasswordManagementFormData) {
+        const queryParams = queryString.parse(this.props.location.search);
+        const next = queryParams.next as string;
         const {token} = this.props.match.params;
-        console.log(`Submit reset password - password: ${values.password} & passwordConfirmation: ${values.confirmPassword}`);
-        await this.props.actions.submitResetPassword(token, values.password, values.confirmPassword);
+        await this.props.actions.submitPasswordManagement(token, values.password, values.confirmPassword, next);
     };
 
     render() {
+        const {action} = this.props.match.params;
+    
+        const createPassword = action === 'create';
         return (
             <React.Fragment>
                 <RepBar />
                 {this.props.auth.isAuthInitialized ? (
                     <>
-                        <ConnectedResetPasswordPage onSubmit={this.onSubmit.bind(this)}
+                        <ConnectedPasswordManagementPage onSubmit={this.onSubmit.bind(this)}
                                             isSuccessful={this.props.auth.isSuccessful}
                                             isError={this.props.auth.isError}
+                                            createPassword={createPassword}
                                             errorMessage={this.props.auth.errorMessage} />
                         {this.props.auth.isInProgress ? <LoadingSpinner /> : null}
                     </>
@@ -58,8 +62,8 @@ function mapStateToProps(state: State) {
 
 function mapActionToProps(dispatch: any) {
     return {
-        actions: bindActionCreators({submitResetPassword, initializeAuth}, dispatch)
+        actions: bindActionCreators({submitPasswordManagement, initializeAuth}, dispatch)
     };
 }
 
-export const ConnectedResetPasswordPageContainer = connect(mapStateToProps, mapActionToProps)(resetPasswordPageContainer);
+export const ConnectedPasswordManagementPageContainer = connect(mapStateToProps, mapActionToProps)(passwordManagementPageContainer);

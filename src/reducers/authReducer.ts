@@ -131,7 +131,6 @@ export function authReducer(state: StateAuth = initialState.auth, action: {type:
             return {
                 ...state,
                 isInProgress: false,
-                isSuccessful: true,
                 isError: false,
                 errorMessage: null,
             }
