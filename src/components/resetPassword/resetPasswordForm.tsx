@@ -1,6 +1,6 @@
 import React, {FormEvent} from 'react'
 import { Field } from 'redux-form';
-import { TextboxElement, ButtonElement } from '@reperio/ui-components';
+import { TextboxElement, ButtonElement, ProtectedTextboxElement } from '@reperio/ui-components';
 
 const rowMargin = "4em";
 
@@ -17,12 +17,12 @@ export const ResetPasswordFormFields = () => (
     <>
         <div className="row">
             <div className="r-row-child">
-                <Field name="password" placeholder="Enter New Password" type="password" component={TextboxElement} />
+                <Field name="password" placeholder="Enter New Password" type="password" component={ProtectedTextboxElement} />
             </div>
         </div>
         <div className="row">
             <div className="r-row-child">
-                <Field name="confirmPassword" placeholder="Confirm New Password" type="password" component={TextboxElement} />
+                <Field name="confirmPassword" placeholder="Confirm New Password" type="password" component={ProtectedTextboxElement} />
             </div>
         </div>
         <div className="row">
