@@ -152,7 +152,12 @@ export const submitPasswordManagement = (token: string, password: string, confir
         dispatch({
             type: authActionTypes.AUTH_RESET_PASSWORD_SUCCESSFUL
         });
-        history.push('/login');
+
+        if (next) {
+            history.push(`/login?next=${encodeURIComponent(next)}`);
+        } else {
+            history.push('/login');
+        }
     } catch (e) {
         if (e.response.status !== 401) {
             console.error(e);

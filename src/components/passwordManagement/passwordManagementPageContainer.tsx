@@ -25,10 +25,11 @@ export class passwordManagementPageContainer extends React.Component<CombinedPro
         }
     }
     
-    async onSubmit(values: ResetPasswordFormData) {
+    async onSubmit(values: PasswordManagementFormData) {
+        const queryParams = queryString.parse(this.props.location.search);
+        const next = queryParams.next as string;
         const {token} = this.props.match.params;
-        console.log(`Submit reset password - password: ${values.password} & passwordConfirmation: ${values.confirmPassword}`);
-        await this.props.actions.submitResetPassword(token, values.password, values.confirmPassword);
+        await this.props.actions.submitPasswordManagement(token, values.password, values.confirmPassword, next);
     };
 
     render() {
