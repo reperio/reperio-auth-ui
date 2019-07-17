@@ -141,7 +141,7 @@ export const submitForgotPassword = (primaryEmailAddress: string) => async (disp
     }
 };
 
-export const submitPasswordManagement = (token: string, password: string, confirmPassword: string, next: string) => async (dispatch: Dispatch<State>, getState: () => State) => {
+export const submitPasswordManagement = (token: string, password: string, confirmPassword: string, next: string, email: string) => async (dispatch: Dispatch<State>, getState: () => State) => {
     dispatch({
         type: authActionTypes.AUTH_RESET_PASSWORD_PENDING
     });
@@ -153,8 +153,12 @@ export const submitPasswordManagement = (token: string, password: string, confir
             type: authActionTypes.AUTH_RESET_PASSWORD_SUCCESSFUL
         });
 
-        if (next) {
+        if (next && email) {
+            history.push(`/login?next=${encodeURIComponent(next)}&email=${email}`);
+        } else if (next) {
             history.push(`/login?next=${encodeURIComponent(next)}`);
+        } else if (email) {
+            history.push(`/login?email=${email}`);
         } else {
             history.push('/login');
         }

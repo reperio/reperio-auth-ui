@@ -28,8 +28,9 @@ export class passwordManagementPageContainer extends React.Component<CombinedPro
     async onSubmit(values: PasswordManagementFormData) {
         const queryParams = queryString.parse(this.props.location.search);
         const next = queryParams.next as string;
+        const email = queryParams.email as string;
         const {token} = this.props.match.params;
-        await this.props.actions.submitPasswordManagement(token, values.password, values.confirmPassword, next);
+        await this.props.actions.submitPasswordManagement(token, values.password, values.confirmPassword, next, email);
     };
 
     render() {
