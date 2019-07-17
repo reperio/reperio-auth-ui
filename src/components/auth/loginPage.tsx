@@ -13,6 +13,7 @@ export interface LoginFormData {
 export interface LoginPageProps {
     navigateToForgotPassword(): void;
     onSubmit(x: LoginFormData): void;
+    initialValues: LoginFormData;
     isSuccessful: boolean;
     isError: boolean;
     errorMessage: string;

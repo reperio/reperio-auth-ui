@@ -35,8 +35,9 @@ export class LoginPageContainer extends React.Component<CombinedProps> {
     getQueryParams() {
         const queryParams = queryString.parse(this.props.location.search);
         const next = queryParams.next as string;
+        const email = queryParams.email as string;
         const useOtp = "otp" in queryParams;
-        return {next, useOtp};
+        return {next, email, useOtp};
     }
 
     async onSubmit(values: LoginFormData) {
@@ -52,7 +53,11 @@ export class LoginPageContainer extends React.Component<CombinedProps> {
     };
 
     render() {
-        const {next, useOtp} = this.getQueryParams();
+        const {next, email, useOtp} = this.getQueryParams();
+        const initialValues: LoginFormData = {
+            primaryEmailAddress: (email || ''),
+            password: ''
+        }
 
         return (
             <React.Fragment>
@@ -63,6 +68,7 @@ export class LoginPageContainer extends React.Component<CombinedProps> {
                                             navigateToForgotPassword={this.navigateToForgotPassword.bind(this)}
                                             isSuccessful={this.props.auth.isSuccessful}
                                             isError={this.props.auth.isError}
+                                            initialValues={initialValues}
                                             errorMessage={this.props.auth.errorMessage} />
                         {this.props.auth.isInProgress ? <LoadingSpinner /> : null}
                         {this.props.auth.isSuccessful && useOtp ? <ConnectedHandleOTP next={next} /> : null}
