@@ -154,11 +154,11 @@ export const submitPasswordManagement = (token: string, password: string, confir
         });
 
         if (next && email) {
-            history.push(`/login?next=${encodeURIComponent(next)}&email=${email}`);
+            history.push(`/login?next=${encodeURIComponent(next)}&email=${encodeURIComponent(email)}`);
         } else if (next) {
             history.push(`/login?next=${encodeURIComponent(next)}`);
         } else if (email) {
-            history.push(`/login?email=${email}`);
+            history.push(`/login?email=${encodeURIComponent(email)}`);
         } else {
             history.push('/login');
         }
