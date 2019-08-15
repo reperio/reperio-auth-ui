@@ -4,7 +4,7 @@
   "description": "",
   "main": "webpack.config.js",
   "scripts": {
-    "start": "webpack-dev-server --mode development --port 8080 --host 0.0.0.0 --history-api-fallback",
+    "start": "webpack-dev-server",
     "install-packages-then-start": "yarn && yarn start",
     "webpack": "webpack",
     "test": "jest"

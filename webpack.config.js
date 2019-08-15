@@ -44,5 +44,11 @@ module.exports = {
             REDIRECT_URL: JSON.stringify(process.env.REDIRECT_URL || 'http://localhost:8080'),
             PERMITTED_POST_MESSAGE_ORIGINS: JSON.stringify(process.env.PERMITTED_POST_MESSAGE_ORIGINS || ['http://localhost:8080', 'http://localhost:8082'])
         })
-    ]
+    ],
+    mode: 'development',
+    devServer: {
+        host: process.env.HOST || '0.0.0.0',
+        port: process.env.PORT || 8080,
+        historyApiFallback: true,
+    }
 };
