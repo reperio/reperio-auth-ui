@@ -31,21 +31,19 @@
   dependencies:
     regenerator-runtime "^0.12.0"
 
-"@reperio/core-connector@^2.0.8":
-  version "2.0.8"
-  resolved "https://registry.yarnpkg.com/@reperio/core-connector/-/core-connector-2.0.8.tgz#56f752474860c049dee44421f887bd7e74d2c7d6"
-  integrity sha512-ASQV12VOXW/LAEjUZdZpIpEwHef+2VPu5AXmnPBjuDAEx3tHWbV7Uv7ztVb1EZcqvzU1a4kH3RjzjxY1axcY+A==
-  dependencies:
-    "@types/react" "^16.7.7"
-    axios "^0.18.0"
-    query-string "^6.2.0"
-    react "^16.6.3"
-    typescript "^3.1.6"
-
 "@reperio/core-connector@^3.5.0":
   version "3.11.1"
   resolved "https://registry.yarnpkg.com/@reperio/core-connector/-/core-connector-3.11.1.tgz#90561cb218bf3f0ea89e60de6b6b16692d7e0c50"
   integrity sha512-SSXGvTgDvZ0DAk9a72WFoY/jbM8ymapnn3qNvQd4nEuemJpPNUFuCiE45VpM6xaVbXzeF8KX0hcYcB8RMDp4qg==
+  dependencies:
+    axios "^0.18.0"
+    query-string "^6.2.0"
+    react "^16.6.3"
+
+"@reperio/core-connector@^4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@reperio/core-connector/-/core-connector-4.0.0.tgz#ef0374193b858c023c4439f544f9601494ec6728"
+  integrity sha512-JZTtgrh+a5DFQgtcrCHhZndbxp6nqY0oWRsEt2kPBOs1eyC3YzWef4zQWJneuMj6+ZurIMaHLad1DB1TPjXHUg==
   dependencies:
     axios "^0.18.0"
     query-string "^6.2.0"
@@ -149,14 +147,6 @@
 "@types/react@*", "@types/react@^16.4.18":
   version "16.4.18"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-16.4.18.tgz#2e28a2e7f92d3fa7d6a65f2b73275c3e3138a13d"
-  dependencies:
-    "@types/prop-types" "*"
-    csstype "^2.2.0"
-
-"@types/react@^16.7.7":
-  version "16.7.7"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-16.7.7.tgz#1e5e23e7dd922968ed4b484cdec00a5402c9f31b"
-  integrity sha512-dJiq7CKxD1XJ/GqmbnsQisFnzG4z5lntKBw9X9qeSrguxFbrrhGa8cK9s0ONBp8wL1EfGfofEDVhjen26U46pw==
   dependencies:
     "@types/prop-types" "*"
     csstype "^2.2.0"
@@ -6836,11 +6826,6 @@ typedarray@^0.0.6:
 typescript@^2.7.2:
   version "2.9.2"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.9.2.tgz#1cbf61d05d6b96269244eb6a3bce4bd914e0f00c"
-
-typescript@^3.1.6:
-  version "3.1.6"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.1.6.tgz#b6543a83cfc8c2befb3f4c8fba6896f5b0c9be68"
-  integrity sha512-tDMYfVtvpb96msS1lDX9MEdHrW4yOuZ4Kdc4Him9oU796XldPYF/t2+uKoX0BBa0hXXwDlqYQbXY5Rzjzc5hBA==
 
 ua-parser-js@^0.7.18:
   version "0.7.19"

@@ -6,11 +6,8 @@ import {State} from "../../store/state";
 const mockCoreApiService = {
     coreApiService: {
         authService: {
-            parseJwt(token: string) {
-                const base64Url = token.split('.')[1];
-                const base64 = base64Url.replace('-', '+').replace('_', '/');
-
-                return JSON.parse(window.atob(base64));
+            getLoggedInUser() {
+                return {id: 123}
             },
             generateOTP: jest.fn(),
             validateCurrentJWT: jest.fn(),
@@ -94,7 +91,8 @@ describe("authActionCreators", () => {
             });
 
             expect(dispatchMock).toHaveBeenNthCalledWith(2, {
-                type: authActionTypes.AUTH_LOGIN_SUCCESSFUL
+                type: authActionTypes.AUTH_LOGIN_SUCCESSFUL,
+                payload: {user: {id: 123}}
             });
         });
 
@@ -168,9 +166,9 @@ describe("authActionCreators", () => {
                     type: authActionTypes.AUTH_OTP_PENDING
                 });
 
-                expect(dispatchMock).toHaveBeenNthCalledWith(2, {
-                    type: authActionTypes.AUTH_CLEAR_USER
-                });
+                expect(dispatchMock).toHaveBeenNthCalledWith(2, expect.objectContaining({
+                    type: authActionTypes.AUTH_OTP_ERROR
+                }));
 
                 expect(generateOTPMock).toHaveBeenCalled();
             } finally {

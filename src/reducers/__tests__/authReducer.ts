@@ -22,18 +22,6 @@ describe("authReducer", () => {
         expect(newState).toMatchObject(initialState.auth);
     });
 
-    it('should set user to null when called with AUTH_CLEAR_USER', () => {
-        const testInitialState = {
-            ...baseState,
-            user: {}
-        };
-        const action = {type: authActionTypes.AUTH_CLEAR_USER, payload: null as any};
-        const newState = authReducer(testInitialState, action);
-        expect(newState).toMatchObject({
-            user: null
-        });
-    });
-
     it('should set isInProgress to true when called with AUTH_LOGIN_PENDING', () => {
         const testInitialState = baseState;
         const action = {type: authActionTypes.AUTH_LOGIN_PENDING, payload: null as any};
@@ -45,7 +33,7 @@ describe("authReducer", () => {
 
     it('should set isSuccessful to true when called with AUTH_LOGIN_SUCCESSFUL', () => {
         const testInitialState = baseState;
-        const action = {type: authActionTypes.AUTH_LOGIN_SUCCESSFUL, payload: null as any};
+        const action = {type: authActionTypes.AUTH_LOGIN_SUCCESSFUL, payload: {user: {}}};
         const newState = authReducer(testInitialState, action);
         expect(newState).toMatchObject({
             isSuccessful: true

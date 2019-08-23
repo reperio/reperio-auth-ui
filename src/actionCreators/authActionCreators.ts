@@ -5,55 +5,17 @@ import {getErrorMessageFromStatusCode} from "./errorMessageHelper";
 import {coreApiService} from "../services/coreApiService";
 import {history} from "../store/history";
 
-export const isTokenExpired = (token: {exp: number}): boolean => {
-    const currentTimestamp = (new Date()).getTime() / 1000;
-    return currentTimestamp >= token.exp;
-};
-
 export const initializeAuth = () => async (dispatch: Dispatch<State>, getState: () => State) => {
-    const state = getState();
-
-    if (state.auth.reperioCoreJWT != null) {
-        try {
-            await coreApiService.authService.validateCurrentJWT();
-            dispatch({
-                type: authActionTypes.AUTH_LOGIN_SUCCESSFUL
-            });
-        } catch (e) {
-            if (e.response.status !== 401) {
-                console.error(e);
-            }
-            dispatch({
-                type: authActionTypes.AUTH_CLEAR_TOKEN
-            });
-        }
-    } else {
+    try {
+        const user = await coreApiService.authService.getLoggedInUser();
         dispatch({
-            type: authActionTypes.AUTH_CLEAR_TOKEN
+            type: authActionTypes.AUTH_INITIALIZED,
+            payload: {user}
         });
-    }
-};
-
-export const setAuthToken = (authToken: string) => async (dispatch: Dispatch<State>, getState: () => State) => {
-    const state = getState();
-    const oldAuthToken = state.auth.reperioCoreJWT;
-
-    const parsedToken = authToken == null ? null : coreApiService.authService.parseJwt(authToken);
-
-    if (parsedToken != null && !isTokenExpired(parsedToken)) {
-        // if the provided authToken is not null and it's not expired...
-
-        if (authToken !== oldAuthToken) {
-            dispatch({
-                type: authActionTypes.AUTH_SET_TOKEN,
-                payload: {authToken}
-            });
-        }
-    } else {
-        // if the provided authToken is null or it's expired...
-
+    } catch {
         dispatch({
-            type: authActionTypes.AUTH_CLEAR_TOKEN
+            type: authActionTypes.AUTH_INITIALIZED,
+            payload: {user: null}
         });
     }
 };
@@ -65,9 +27,11 @@ export const submitAuth = (primaryEmailAddress: string, password: string) => asy
 
     try {
         await coreApiService.authService.login(primaryEmailAddress, password);
+        const user = await coreApiService.authService.getLoggedInUser();
 
         dispatch({
-            type: authActionTypes.AUTH_LOGIN_SUCCESSFUL
+            type: authActionTypes.AUTH_LOGIN_SUCCESSFUL,
+            payload: {user}
         });
 
     } catch (e) {
@@ -100,19 +64,12 @@ export const requestOTP = () => async (dispatch: Dispatch<State>, getState: () =
             console.error(e);
         }
 
-        const state = getState();
-        if (state.auth.isAuthInitialized) {
-            dispatch({
-                type: authActionTypes.AUTH_OTP_ERROR,
-                payload: {
-                    message: getErrorMessageFromStatusCode(e.response != null ? e.response.status : null)
-                }
-            });
-        } else {
-            dispatch({
-                type: authActionTypes.AUTH_CLEAR_TOKEN
-            });
-        }
+        dispatch({
+            type: authActionTypes.AUTH_OTP_ERROR,
+            payload: {
+                message: getErrorMessageFromStatusCode(e.response != null ? e.response.status : null)
+            }
+        });
     }
 };
 
