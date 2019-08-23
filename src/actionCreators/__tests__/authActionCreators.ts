@@ -3,9 +3,6 @@ import {AxiosError} from "axios";
 import {authActionTypes} from "../../actionTypes/authActionTypes";
 import {State} from "../../store/state";
 
-const testValidJwt = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1NDI4MjQ0NzMsImV4cCI6MTU0MjkxMDg3MywiY3VycmVudFVzZXJJZCI6MX0.TCBF85Gx3fZOXJFlQXk7yGTK99lX6KXUPiD0ydateiA"; // created 2018-11-21T18:21:13Z, expires 2018-11-22T18:21:13Z, currentUserId: 1
-const testExpiredJwt = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1NDI3MzgwNzMsImV4cCI6MTU0MjgyNDQ3MywiY3VycmVudFVzZXJJZCI6MX0.8xrI-nfpAYT_cDB-AzLdhrIqU6ZX3zeKK2_wUJldFWE"; // created 2018-11-20T18:21:13Z, expires 2018-11-21T18:21:13Z, currentUserId: 1
-
 const mockCoreApiService = {
     coreApiService: {
         authService: {
@@ -75,7 +72,7 @@ describe("authActionCreators", () => {
     const baseState: State = {
         auth: {
             isAuthInitialized: false,
-            reperioCoreJWT: null,
+            user: null,
             isInProgress: false,
             isSuccessful: false,
             isError: false,
@@ -85,147 +82,6 @@ describe("authActionCreators", () => {
             otp: null
         }
     };
-
-    describe("initializeAuth", () => {
-        it("should dispatch AUTH_CLEAR_TOKEN when state.auth.reperioCoreJWT == null", async () => {
-            const state = {
-                ...baseState
-            };
-
-            const getStateMock = jest.fn(() => state);
-            await authActionCreators.initializeAuth()(dispatchMock, getStateMock);
-
-            expect(dispatchMock).toHaveBeenCalledWith({
-                type: authActionTypes.AUTH_CLEAR_TOKEN
-            });
-        });
-
-        it("should dispatch AUTH_LOGIN_SUCCESSFUL when state.auth.reperioCoreJWT != null and validateCurrentJWT returns successful", async () => {
-            const state = {
-                ...baseState,
-                auth: {
-                    ...baseState.auth,
-                    reperioCoreJWT: testValidJwt
-                }
-            };
-
-            const validateCurrentJWTMock = jest.spyOn(mockCoreApiService.coreApiService.authService, "validateCurrentJWT")
-                .mockResolvedValue(null);
-
-            try {
-                const getStateMock = jest.fn(() => state);
-                await authActionCreators.initializeAuth()(dispatchMock, getStateMock);
-
-                expect(dispatchMock).toHaveBeenCalledWith({
-                    type: authActionTypes.AUTH_LOGIN_SUCCESSFUL
-                });
-            } finally {
-                validateCurrentJWTMock.mockRestore();
-            }
-        });
-
-        it("should dispatch AUTH_CLEAR_TOKEN when state.auth.reperioCoreJWT != null and validateCurrentJWT returns rejected", async () => {
-            const state = {
-                ...baseState,
-                auth: {
-                    ...baseState.auth,
-                    reperioCoreJWT: testValidJwt
-                }
-            };
-
-            const validateCurrentJWTMock = jest.spyOn(mockCoreApiService.coreApiService.authService, "validateCurrentJWT")
-                .mockRejectedValue({
-                    config: null,
-                    name: null,
-                    message: null,
-                    response: {
-                        data: null,
-                        status: 401,
-                        statusText: null,
-                        headers: null,
-                        config: null
-                    }
-                });
-
-            try {
-                const getStateMock = jest.fn(() => state);
-                await authActionCreators.initializeAuth()(dispatchMock, getStateMock);
-
-                expect(validateCurrentJWTMock).toHaveBeenCalled();
-
-                expect(dispatchMock).toHaveBeenCalledWith({
-                    type: authActionTypes.AUTH_CLEAR_TOKEN
-                });
-            } finally {
-                validateCurrentJWTMock.mockRestore();
-            }
-        });
-    });
-
-    describe("setAuthToken", () => {
-        let isTokenExpiredMock: SpyInstance;
-
-        beforeEach(() => {
-            isTokenExpiredMock = jest.spyOn(authActionCreators, "isTokenExpired")
-                .mockImplementation((token: {exp: number}): boolean => {
-                    const currentTimestamp = 1542897273; // 2018-11-22T14:34:33Z
-                    return currentTimestamp >= token.exp;
-                });
-        });
-
-        afterEach(() => {
-            isTokenExpiredMock.mockRestore();
-        });
-
-        it("should dispatch AUTH_CLEAR_TOKEN if authToken is null", async () => {
-            const state = baseState;
-
-            const getStateMock = jest.fn(() => state);
-            await authActionCreators.setAuthToken(null)(dispatchMock, getStateMock);
-
-            expect(dispatchMock).toHaveBeenCalledWith({
-                type: authActionTypes.AUTH_CLEAR_TOKEN
-            });
-        });
-
-        it("should dispatch AUTH_CLEAR_TOKEN if authToken is expired", async () => {
-            const state = baseState;
-
-            const getStateMock = jest.fn(() => state);
-            await authActionCreators.setAuthToken(testExpiredJwt)(dispatchMock, getStateMock);
-
-            expect(dispatchMock).toHaveBeenCalledWith({
-                type: authActionTypes.AUTH_CLEAR_TOKEN
-            });
-        });
-
-        it("should dispatch AUTH_SET_TOKEN if authToken is not expired and is not the current token", async () => {
-            const state = baseState;
-
-            const getStateMock = jest.fn(() => state);
-            await authActionCreators.setAuthToken(testValidJwt)(dispatchMock, getStateMock);
-
-            expect(dispatchMock).toHaveBeenCalledWith({
-                type: authActionTypes.AUTH_SET_TOKEN,
-                payload: {authToken: testValidJwt}
-            });
-        });
-
-        it("should not dispatch AUTH_SET_TOKEN if authToken is not expired and is the current token", async () => {
-            const state = {
-                ...baseState,
-                auth: {
-                    ...baseState.auth,
-                    reperioCoreJWT: testValidJwt
-                }
-            };
-
-            const getStateMock = jest.fn(() => state);
-            await authActionCreators.setAuthToken(testValidJwt)(dispatchMock, getStateMock);
-
-            expect(dispatchMock).not.toHaveBeenCalled();
-        });
-    });
 
     describe("submitAuth", () => {
         it("dispatches correct actions when submitted with valid credentials", async () => {
@@ -313,7 +169,7 @@ describe("authActionCreators", () => {
                 });
 
                 expect(dispatchMock).toHaveBeenNthCalledWith(2, {
-                    type: authActionTypes.AUTH_CLEAR_TOKEN
+                    type: authActionTypes.AUTH_CLEAR_USER
                 });
 
                 expect(generateOTPMock).toHaveBeenCalled();
