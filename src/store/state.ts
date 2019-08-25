@@ -4,7 +4,7 @@ export interface State {
 
 export interface StateAuth {
     isAuthInitialized: boolean;
-    reperioCoreJWT: string;
+    user: any;
     isInProgress: boolean;
     isSuccessful: boolean;
     isError: boolean;
@@ -17,7 +17,7 @@ export interface StateAuth {
 export const initialState: State = {
     auth: {
         isAuthInitialized: false,
-        reperioCoreJWT: null,
+        user: null,
         isInProgress: false,
         isSuccessful: false,
         isError: false,
