@@ -1,6 +1,6 @@
 import React, {FormEvent} from 'react'
 import { Field } from 'redux-form';
-import { TextboxElement, ButtonElement, ProtectedTextboxElement } from '@reperio/ui-components';
+import { TextboxElement, ButtonElement, ProtectedTextboxElement, AnchorElement } from '@reperio/ui-components';
 
 const rowMargin = "4em";
 
@@ -28,6 +28,10 @@ export const LoginFormFields = (props: {navigateToForgotPassword(): void}) => (
         <div className="row">
             <div className="r-row-child">
                 <ButtonElement type="submit" name="signin" color="success" text="Sign In" />
+            </div>
+        </div>
+        <div className="row">
+            <div className="r-row-child">
                 <ButtonElement type="button" color="neutral" text="Forgot Password" onClick={() => props.navigateToForgotPassword()} />
             </div>
         </div>

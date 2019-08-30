@@ -15,8 +15,8 @@ import ExternalRedirect from "../externalRedirect";
 import repBarSrc from '../../assets/rep-bar.svg';
 import {ConnectedHandleOTP} from "./handleOTP";
 export const RepBar = () => (
-    <div style={{width: "100%", display: 'flex', alignItems: 'center', justifyContent: 'center', height: "54px", overflow: "hidden"}}>
-        <img src={repBarSrc} style={{width: "100%", alignSelf: 'center', maxWidth: 1200 }} />
+    <div style={{width: "100%", height: "54px", overflow: "hidden"}}>
+        <img src={repBarSrc} style={{width: "100%", alignSelf: 'center' }} />
     </div>
 );
 

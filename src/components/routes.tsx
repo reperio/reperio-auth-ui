@@ -21,7 +21,7 @@ const RedirectWithQueryString = (props: RouteComponentProps) => {
 };
 
 export const Routes = () => (
-    <div className="app-content">
+    <div className="">
         <Switch>
             <Route exact path="/login" component={ConnectedLoginPageContainer} />
             <Route exact path="/forgotPassword" component={ConnectedForgotPasswordPageContainer} />

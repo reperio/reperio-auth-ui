@@ -22,19 +22,20 @@ export interface LoginPageProps {
 export type CombinedProps = LoginPageProps & InjectedFormProps<LoginFormData, LoginPageProps>;
 
 export const LoginPage: React.SFC<CombinedProps> = (props: CombinedProps) => (
-    <Wrapper>
-        <div className="r-wrapper-child " style={{flex: '4 0 680px', maxWidth: "none"}}>
+    <div className="auth-form-container">
+        <div className="r-wrapper-child " style={{flex: 1, maxWidth: "none"}}>
             <LoginReperioLogo />
         </div>
-        <div className="r-wrapper-child " style={{flex: '1 1 auto', maxWidth: "none"}} />
-        <div className="r-wrapper-child " style={{flex: '0 0 480px', maxWidth: "none"}}>
-            <LoginForm onSubmit={props.handleSubmit(props.onSubmit)}
-                       navigateToForgotPassword={props.navigateToForgotPassword}
-                       isSuccessful={props.isSuccessful}
-                       isError={props.isError}
-                       errorMessage={props.errorMessage} />
+        <div className="r-wrapper-child " style={{flex: 1}}>
+            <div style={{maxWidth: 600, margin: '0 auto'}}>
+                <LoginForm onSubmit={props.handleSubmit(props.onSubmit)}
+                        navigateToForgotPassword={props.navigateToForgotPassword}
+                        isSuccessful={props.isSuccessful}
+                        isError={props.isError}
+                        errorMessage={props.errorMessage} />
+            </div>
         </div>
-    </Wrapper>
+    </div>
 );
 
 export const ConnectedLoginPage = reduxForm<LoginFormData, LoginPageProps>({ form: 'loginForm' })(LoginPage);

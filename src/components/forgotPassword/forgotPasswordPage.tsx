@@ -19,18 +19,19 @@ export interface ForgotPasswordPageProps {
 export type CombinedProps = ForgotPasswordPageProps & InjectedFormProps<ForgotPasswordFormData, ForgotPasswordPageProps>;
 
 export const ForgotPasswordPage: React.SFC<CombinedProps> = (props: CombinedProps) => (
-    <Wrapper>
-        <div className="r-wrapper-child " style={{flex: '4 0 680px', maxWidth: "none"}}>
+    <div className="auth-form-container">
+        <div className="r-wrapper-child " style={{flex: 1, maxWidth: "none"}}>
             <LoginReperioLogo />
         </div>
-        <div className="r-wrapper-child " style={{flex: '1 1 auto', maxWidth: "none"}} />
-        <div className="r-wrapper-child " style={{flex: '0 0 480px', maxWidth: "none"}}>
-            <ForgotPasswordForm onSubmit={props.handleSubmit(props.onSubmit)}
-                       isSuccessful={props.isSuccessful}
-                       isError={props.isError}
-                       errorMessage={props.errorMessage} />
+        <div className="r-wrapper-child " style={{flex: 1}}>
+            <div style={{maxWidth: 600, margin: '0 auto'}}>
+                <ForgotPasswordForm onSubmit={props.handleSubmit(props.onSubmit)}
+                        isSuccessful={props.isSuccessful}
+                        isError={props.isError}
+                        errorMessage={props.errorMessage} />
+            </div>
         </div>
-    </Wrapper>
+    </div>
 );
 
 export const ConnectedForgotPasswordPage = reduxForm<ForgotPasswordFormData, ForgotPasswordPageProps>({ form: 'forgotPasswordForm' })(ForgotPasswordPage);
