@@ -49,10 +49,10 @@
     query-string "^6.2.0"
     react "^16.6.3"
 
-"@reperio/ui-components@^0.13.0":
-  version "0.13.0"
-  resolved "https://registry.yarnpkg.com/@reperio/ui-components/-/ui-components-0.13.0.tgz#67d902bf5d876f3da1c305da48299b50a9520b09"
-  integrity sha512-oMQNfAArCNBFEyIeUy/Iz4Db9iV7P6y925L7cGW3UCPYTG+0ej+bzEap0u+uXDYzweNzw3OX2loGLPmKx0RIVA==
+"@reperio/ui-components@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@reperio/ui-components/-/ui-components-1.0.0.tgz#d2ef7c6ee6bd89abed3b298e6d1d9fa5ec7a0a47"
+  integrity sha512-nAg5Yp0pL6ZBcF95OTSqrkC0hiSIkpVgpuqcNX1o+EpU7tJ0+C4r+5Fy1AcfgDGFbUSeuCImhCLWaptDYPSKcw==
   dependencies:
     "@reperio/core-connector" "^3.5.0"
     classnames "^2.2.6"

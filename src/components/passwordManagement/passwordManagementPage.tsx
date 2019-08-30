@@ -21,19 +21,20 @@ export interface PasswordManagementPageProps {
 export type CombinedProps = PasswordManagementPageProps & InjectedFormProps<PasswordManagementFormData, PasswordManagementPageProps>;
 
 export const PasswordManagementPage: React.SFC<CombinedProps> = (props: CombinedProps) => (
-    <Wrapper>
-        <div className="r-wrapper-child " style={{flex: '4 0 680px', maxWidth: "none"}}>
+    <div className="auth-form-container">
+        <div className="r-wrapper-child " style={{flex: 1, maxWidth: "none"}}>
             <LoginReperioLogo />
         </div>
-        <div className="r-wrapper-child " style={{flex: '1 1 auto', maxWidth: "none"}} />
-        <div className="r-wrapper-child " style={{flex: '0 0 480px', maxWidth: "none"}}>
-            <PasswordManagementForm onSubmit={props.handleSubmit(props.onSubmit)}
+        <div className="r-wrapper-child " style={{flex: 1}}>
+            <div style={{maxWidth: 600, margin: '0 auto'}}>
+                <PasswordManagementForm onSubmit={props.handleSubmit(props.onSubmit)}
                        isSuccessful={props.isSuccessful}
                        isError={props.isError}
                        createPassword={props.createPassword}
                        errorMessage={props.errorMessage} />
+            </div>
         </div>
-    </Wrapper>
+    </div>
 );
 
 export const ConnectedPasswordManagementPage = reduxForm<PasswordManagementFormData, PasswordManagementPageProps>({ form: 'passwordManagementForm' })(PasswordManagementPage);
