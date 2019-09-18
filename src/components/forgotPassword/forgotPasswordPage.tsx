@@ -2,34 +2,30 @@ import React from 'react'
 import { reduxForm, InjectedFormProps } from 'redux-form';
 import { Wrapper } from '@reperio/ui-components';
 import {StateAuth} from "../../store/state";
-import {LoginReperioLogo} from "./loginReperioLogo";
-import {LoginForm} from "./loginForm";
+import {LoginReperioLogo} from "../auth/loginReperioLogo";
+import {ForgotPasswordForm} from "./forgotPasswordForm";
 
-export interface LoginFormData {
+export interface ForgotPasswordFormData {
     primaryEmailAddress: string;
-    password: string;
 }
 
-export interface LoginPageProps {
-    navigateToForgotPassword(): void;
-    onSubmit(x: LoginFormData): void;
-    initialValues: LoginFormData;
+export interface ForgotPasswordPageProps {
+    onSubmit(x: ForgotPasswordFormData): void;
     isSuccessful: boolean;
     isError: boolean;
     errorMessage: string;
 }
 
-export type CombinedProps = LoginPageProps & InjectedFormProps<LoginFormData, LoginPageProps>;
+export type CombinedProps = ForgotPasswordPageProps & InjectedFormProps<ForgotPasswordFormData, ForgotPasswordPageProps>;
 
-export const LoginPage: React.SFC<CombinedProps> = (props: CombinedProps) => (
+export const ForgotPasswordPage: React.SFC<CombinedProps> = (props: CombinedProps) => (
     <div className="auth-form-container">
         <div className="r-wrapper-child " style={{flex: 1, maxWidth: "none"}}>
             <LoginReperioLogo />
         </div>
         <div className="r-wrapper-child " style={{flex: 1}}>
             <div style={{maxWidth: 600, margin: '0 auto'}}>
-                <LoginForm onSubmit={props.handleSubmit(props.onSubmit)}
-                        navigateToForgotPassword={props.navigateToForgotPassword}
+                <ForgotPasswordForm onSubmit={props.handleSubmit(props.onSubmit)}
                         isSuccessful={props.isSuccessful}
                         isError={props.isError}
                         errorMessage={props.errorMessage} />
@@ -38,4 +34,4 @@ export const LoginPage: React.SFC<CombinedProps> = (props: CombinedProps) => (
     </div>
 );
 
-export const ConnectedLoginPage = reduxForm<LoginFormData, LoginPageProps>({ form: 'loginForm' })(LoginPage);
+export const ConnectedForgotPasswordPage = reduxForm<ForgotPasswordFormData, ForgotPasswordPageProps>({ form: 'forgotPasswordForm' })(ForgotPasswordPage);

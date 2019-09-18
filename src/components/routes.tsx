@@ -4,6 +4,9 @@ import {Redirect, RouteComponentProps} from "react-router";
 import queryString from "query-string";
 
 import {ConnectedLoginPageContainer} from "./auth/loginPageContainer";
+import {ConnectedForgotPasswordPageContainer} from "./forgotPassword/forgotPasswordPageContainer";
+import {ConnectedPasswordManagementPageContainer} from "./passwordManagement/passwordManagementPageContainer";
+
 
 
 const RedirectWithQueryString = (props: RouteComponentProps) => {
@@ -18,9 +21,11 @@ const RedirectWithQueryString = (props: RouteComponentProps) => {
 };
 
 export const Routes = () => (
-    <div className="app-content">
+    <div className="">
         <Switch>
             <Route exact path="/login" component={ConnectedLoginPageContainer} />
+            <Route exact path="/forgotPassword" component={ConnectedForgotPasswordPageContainer} />
+            <Route exact path="/passwordManagement/:token/:action" component={ConnectedPasswordManagementPageContainer} />
             <Route exact path="/auth" component={null} />
             <Route component={RedirectWithQueryString} />
         </Switch>

@@ -5,7 +5,7 @@ import {authReducer} from "../authReducer";
 describe("authReducer", () => {
     const baseState: StateAuth = {
         isAuthInitialized: false,
-        reperioCoreJWT: null,
+        user: null,
         isInProgress: false,
         isSuccessful: false,
         isError: false,
@@ -22,39 +22,6 @@ describe("authReducer", () => {
         expect(newState).toMatchObject(initialState.auth);
     });
 
-    it('should set token when called with AUTH_SET_TOKEN', () => {
-        const testInitialState = baseState;
-        const action = {type: authActionTypes.AUTH_SET_TOKEN, payload: {authToken: "test-auth-token"}};
-        const newState = authReducer(testInitialState, action);
-        expect(newState).toMatchObject({
-            reperioCoreJWT: "test-auth-token"
-        });
-    });
-
-    it('should clear token when called with AUTH_CLEAR_TOKEN', () => {
-        const testInitialState = {
-            ...baseState,
-            reperioCoreJWT: "test-auth-token"
-        };
-        const action = {type: authActionTypes.AUTH_CLEAR_TOKEN, payload: null as any};
-        const newState = authReducer(testInitialState, action);
-        expect(newState).toMatchObject({
-            reperioCoreJWT: null
-        });
-    });
-
-    it('should set isAuthInitialized to true when called with AUTH_CLEAR_TOKEN', () => {
-        const testInitialState = {
-            ...baseState,
-            reperioCoreJWT: "test-auth-token"
-        };
-        const action = {type: authActionTypes.AUTH_CLEAR_TOKEN, payload: null as any};
-        const newState = authReducer(testInitialState, action);
-        expect(newState).toMatchObject({
-            isAuthInitialized: true
-        });
-    });
-
     it('should set isInProgress to true when called with AUTH_LOGIN_PENDING', () => {
         const testInitialState = baseState;
         const action = {type: authActionTypes.AUTH_LOGIN_PENDING, payload: null as any};
@@ -66,7 +33,7 @@ describe("authReducer", () => {
 
     it('should set isSuccessful to true when called with AUTH_LOGIN_SUCCESSFUL', () => {
         const testInitialState = baseState;
-        const action = {type: authActionTypes.AUTH_LOGIN_SUCCESSFUL, payload: null as any};
+        const action = {type: authActionTypes.AUTH_LOGIN_SUCCESSFUL, payload: {user: {}}};
         const newState = authReducer(testInitialState, action);
         expect(newState).toMatchObject({
             isSuccessful: true

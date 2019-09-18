@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  app:
+    container_name: "reperio-auth-ui-app"
+    build:
+      context: .
+      dockerfile: ./docker/app/Dockerfile
+    ports: 
+      - "8081:8080"
+    volumes:
+      - .:/opt/app
+      - /opt/app/node_modules
+      - /opt/app/dist
+    command: ["yarn", "install-packages-then-start"]

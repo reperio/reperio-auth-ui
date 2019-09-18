@@ -15,7 +15,7 @@ describe("HandleOTP", () => {
         },
         auth: {
             isAuthInitialized: false,
-            reperioCoreJWT: null,
+            user: null,
             isInProgress: false,
             isSuccessful: false,
             isError: false,

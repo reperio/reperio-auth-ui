@@ -1,12 +1,17 @@
 @import 'variables';
 @import '~@reperio/ui-components/lib/styles.min.css';
 
+.page-container {
+  background: #fff;
+  min-width: unset;
+}
+
 .app-container {
     display: flex;
     flex-direction: column;
     height:100%;
     width: 100%;
-    min-width: 1280px;
+    min-width:  unset;
 
     .app-root {
         display: flex;
@@ -244,4 +249,25 @@ fieldset {
 
 .panel-form {
   margin: 0px;
+}
+
+div.auth-form-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  max-width: 1500px;
+  margin: 0 auto;
+
+  @media (max-width: 980px) {
+    width: 80%;
+    margin: 0 auto;
+    flex-direction: column;
+    justify-content: center;
+  }
+}
+
+@media(max-width: 980px) {
+  .hidden-small {
+    display: none;
+  }
 }

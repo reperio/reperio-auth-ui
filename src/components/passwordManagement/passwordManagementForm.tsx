@@ -1,55 +1,59 @@
 import React, {FormEvent} from 'react'
 import { Field } from 'redux-form';
-import { TextboxElement, ButtonElement, ProtectedTextboxElement, AnchorElement } from '@reperio/ui-components';
+import { TextboxElement, ButtonElement, ProtectedTextboxElement } from '@reperio/ui-components';
 
 const rowMargin = "4em";
 
-export const LoginFormHeader = () => (
+export const ResetPasswordFormHeader = () => (
     <div className="row" style={{marginTop: rowMargin}}>
         <div className="r-row-child">
-            <h2>Login</h2>
+            <h2>Reset Password</h2>
             <hr />
         </div>
     </div>
 );
 
-export const LoginFormFields = (props: {navigateToForgotPassword(): void}) => (
+export const CreatePasswordFormHeader = () => (
+    <div className="row" style={{marginTop: rowMargin}}>
+        <div className="r-row-child">
+            <h2>Create Password</h2>
+            <hr />
+        </div>
+    </div>
+);
+
+export const PasswordManagementFormFields = () => (
     <>
         <div className="row">
             <div className="r-row-child">
-                <Field name="primaryEmailAddress" placeholder="Email" type="text" component={TextboxElement} />
+                <Field name="password" placeholder="Enter New Password" type="password" component={ProtectedTextboxElement} />
             </div>
         </div>
         <div className="row">
             <div className="r-row-child">
-                <Field name="password" placeholder="Password" type="password" component={ProtectedTextboxElement} />
+                <Field name="confirmPassword" placeholder="Confirm New Password" type="password" component={ProtectedTextboxElement} />
             </div>
         </div>
         <div className="row">
             <div className="r-row-child">
-                <ButtonElement type="submit" name="signin" color="success" text="Sign In" />
-            </div>
-        </div>
-        <div className="row">
-            <div className="r-row-child">
-                <ButtonElement type="button" color="neutral" text="Forgot Password" onClick={() => props.navigateToForgotPassword()} />
+                <ButtonElement type="submit" name="signin" color="success" text="Submit" />
             </div>
         </div>
     </>
 );
 
 
-export interface LoginFormProps {
+export interface PasswordManagementFormProps {
     onSubmit(e: FormEvent): void;
-    navigateToForgotPassword(): void;
     isSuccessful: boolean;
     isError: boolean;
+    createPassword: boolean;
     errorMessage: string;
 }
 
-export const LoginForm = (props: LoginFormProps) => (
+export const PasswordManagementForm = (props: PasswordManagementFormProps) => (
     <form onSubmit={(e) => props.onSubmit(e)}>
-        <LoginFormHeader />
+        {props.createPassword ? <CreatePasswordFormHeader /> : <ResetPasswordFormHeader />}
         {props.isError ?
             <div className="row login-auth-error">
                 <div className="r-row-child">
@@ -64,6 +68,6 @@ export const LoginForm = (props: LoginFormProps) => (
                 </div>
             </div>
             : null}
-        <LoginFormFields navigateToForgotPassword={props.navigateToForgotPassword} />
+        <PasswordManagementFormFields />
     </form>
 );
