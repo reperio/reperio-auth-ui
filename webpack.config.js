@@ -1,5 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 const webpack = require('webpack');
 
 module.exports = {
@@ -43,7 +44,10 @@ module.exports = {
             API_URL: JSON.stringify(process.env.API_URL || 'http://localhost:3000/api'),
             REDIRECT_URL: JSON.stringify(process.env.REDIRECT_URL || 'http://localhost:8080'),
             PERMITTED_POST_MESSAGE_ORIGINS: JSON.stringify(process.env.PERMITTED_POST_MESSAGE_ORIGINS || ['http://localhost:8080', 'http://localhost:8082'])
-        })
+        }),
+        new CopyPlugin([
+            { from: 'src/static/robots.txt', to: 'robots.txt'}
+        ])
     ],
     mode: 'development',
     devServer: {
