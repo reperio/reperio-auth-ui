@@ -104,6 +104,19 @@ export const submitPasswordManagement = (token: string, password: string, confir
     });
 
     try {
+        if (password !== confirmPassword) {
+            dispatch({
+                type: authActionTypes.AUTH_RESET_PASSWORD_ERROR,
+                payload: { message: 'Error: passwords must match' }
+            });
+            return;
+        } else if (password.length < 8) {
+            dispatch({
+                type: authActionTypes.AUTH_RESET_PASSWORD_ERROR,
+                payload: { message: 'Error: password must be at least 8 characters' }
+            });
+            return;
+        }
         await coreApiService.authService.resetPassword(token, password, confirmPassword);
 
         dispatch({
@@ -124,10 +137,16 @@ export const submitPasswordManagement = (token: string, password: string, confir
             console.error(e);
         }
 
+        let displayError = getErrorMessageFromStatusCode(e.resetPassword != null ? e.response.status : null);
+
+        if (e.response.status === 400 && e.response.data !== 'bad data') {
+            displayError = e.response.data;
+        }
+
         dispatch({
             type: authActionTypes.AUTH_RESET_PASSWORD_ERROR,
             payload: {
-                message: getErrorMessageFromStatusCode(e.resetPassword != null ? e.response.status : null)
+                message: displayError
             }
         });
     }
