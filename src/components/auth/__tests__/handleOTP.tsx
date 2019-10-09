@@ -19,6 +19,7 @@ describe("HandleOTP", () => {
             isInProgress: false,
             isSuccessful: false,
             isError: false,
+            isBadToken: false,
             errorMessage: null,
             otpIsInProgress: false,
             otpIsSuccessful: false,

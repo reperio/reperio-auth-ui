@@ -5,7 +5,7 @@ import {bindActionCreators} from "redux";
 import queryString from "query-string";
 import {history} from "../../store/history";
 
-import {submitPasswordManagement, initializeAuth} from "../../actionCreators/authActionCreators";
+import {checkPasswordToken, submitPasswordManagement, initializeAuth, returnToLogin} from "../../actionCreators/authActionCreators";
 import { State } from '../../store/state';
 
 import {ConnectedPasswordManagementPage, PasswordManagementFormData} from "./passwordManagementPage";
@@ -23,6 +23,8 @@ export class passwordManagementPageContainer extends React.Component<CombinedPro
         if (!this.props.auth.isAuthInitialized) {
             this.props.actions.initializeAuth();
         }
+        const {token} = this.props.match.params;
+        this.props.actions.checkPasswordToken(token);
     }
     
     async onSubmit(values: PasswordManagementFormData) {
@@ -43,8 +45,10 @@ export class passwordManagementPageContainer extends React.Component<CombinedPro
                 {this.props.auth.isAuthInitialized ? (
                     <>
                         <ConnectedPasswordManagementPage onSubmit={this.onSubmit.bind(this)}
+                                            returnToLogin={this.props.actions.returnToLogin.bind(this)}
                                             isSuccessful={this.props.auth.isSuccessful}
                                             isError={this.props.auth.isError}
+                                            isBadToken={this.props.auth.isBadToken}
                                             createPassword={createPassword}
                                             errorMessage={this.props.auth.errorMessage} />
                         {this.props.auth.isInProgress ? <LoadingSpinner /> : null}
@@ -63,7 +67,7 @@ function mapStateToProps(state: State) {
 
 function mapActionToProps(dispatch: any) {
     return {
-        actions: bindActionCreators({submitPasswordManagement, initializeAuth}, dispatch)
+        actions: bindActionCreators({checkPasswordToken, submitPasswordManagement, initializeAuth, returnToLogin}, dispatch)
     };
 }
 
