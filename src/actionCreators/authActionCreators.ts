@@ -98,6 +98,31 @@ export const submitForgotPassword = (primaryEmailAddress: string) => async (disp
     }
 };
 
+export const checkPasswordToken = (token: string) => async (dispatch: Dispatch<State>) => {
+    try {
+        const tokenValid = (await coreApiService.authService.verifyResetPassword(token)).data;
+        console.log(token, tokenValid);
+        if (!tokenValid) {
+            dispatch({
+                type: authActionTypes.AUTH_RESET_PASSWORD_BAD_TOKEN,
+                payload: { message: 'Bad token: The token in the URL has expired, already been used or is invalid. Please return to login page.' }
+            });
+        }
+        return;
+    } catch (e) {
+        console.error(e);
+        return;
+    }
+};
+
+export const returnToLogin = () => async (dispatch: Dispatch<State>) => {
+    dispatch({
+        type: authActionTypes.AUTH_RESET_UI
+    });
+    history.push('/login');
+    return;
+}
+
 export const submitPasswordManagement = (token: string, password: string, confirmPassword: string, next: string, email: string) => async (dispatch: Dispatch<State>, getState: () => State) => {
     dispatch({
         type: authActionTypes.AUTH_RESET_PASSWORD_PENDING

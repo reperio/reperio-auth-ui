@@ -142,6 +142,17 @@ export function authReducer(state: StateAuth = initialState.auth, action: {type:
                 errorMessage: message
             }
         }
+        case authActionTypes.AUTH_RESET_PASSWORD_BAD_TOKEN: {
+            const {message} = action.payload;
+            return {
+                ...state,
+                isInProgress: false,
+                isSuccessful: false,
+                isError: true,
+                isBadToken: true,
+                errorMessage: message
+            }
+        }
         case authActionTypes.AUTH_RESET_UI: {
             return {
                 ...state,
